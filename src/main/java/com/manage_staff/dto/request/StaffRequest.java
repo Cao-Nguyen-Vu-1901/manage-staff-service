@@ -24,15 +24,27 @@ public class StaffRequest {
             @Size(min = 2, message = "Name must be at least 2 characters")
     String name;
 
-
+    @DobConstraint(min = 10)
     LocalDate dob;
 
     String gender;
 
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+    String email;
+
+    @Pattern(regexp = "^\\d{10}$")
+    String phoneNumber;
+    
+    @NotNull
+            @Size(min = 2, message = "Name must be at least 2 characters")
     String address;
 
+    @NotNull
+            @Size(min = 9, message = "Name must be at least 9 characters")
     String username;
 
+    @NotNull
+            @Size(min = 9, message = "Name must be at least 9 characters")
     String password;
 
     boolean status;
