@@ -1,0 +1,21 @@
+
+server:
+  port: 8008
+  servlet:
+    context-path: /manage-staff
+
+spring:
+  application:
+    name:
+      manage-staff-service
+  datasource:
+    url: jdbc:mysql://localhost:3309/manage_staff
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 190103
+  jpa:
+    hibernate:
+        ddl-auto: update
+    show_sql: true
+    properties:
+      dialect: org.hibernate.dialect.MySQL8Dialect
