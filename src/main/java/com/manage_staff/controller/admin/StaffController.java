@@ -20,7 +20,6 @@ public class StaffController {
 
     IStaffService staffService;
 
-
     @GetMapping
     public ApiResponse<List<StaffResponse>> findAll(){
         return ApiResponse.<List<StaffResponse>>builder()
@@ -35,4 +34,5 @@ public class StaffController {
                         staffService.findById(id)
                 ).build();
     }
+
 }

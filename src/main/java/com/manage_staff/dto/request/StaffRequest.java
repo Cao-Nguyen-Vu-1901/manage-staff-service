@@ -1,6 +1,8 @@
 package com.manage_staff.dto.request;
 
 import com.manage_staff.entity.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,7 +20,10 @@ import java.util.Set;
 @Data
 public class StaffRequest {
 
+    @NotNull
+            @Size(min = 2, message = "Name must be at least 2 characters")
     String name;
+
 
     LocalDate dob;
 
