@@ -30,7 +30,11 @@ public class Staff  implements Serializable {
     LocalDate dob;
 
     String gender;
-
+ 
+    String email;
+ 
+    String phoneNumber;
+    
     String address;
 
     String username;
