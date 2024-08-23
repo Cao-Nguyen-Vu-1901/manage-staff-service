@@ -1,6 +1,7 @@
 package com.manage_staff.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.manage_staff.entity.Department;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PositionResponse {
 
     String id;
@@ -27,6 +29,6 @@ public class PositionResponse {
 
     List<StaffResponse> staff = new ArrayList<>();
 
-    Department department;
+    DepartmentResponse department;
 
 }

@@ -19,10 +19,10 @@ public class PositionRequest {
 
     LocalDate promotionDate;
 
-    PayrollRequest payroll;
+    String payroll;
 
-    List<StaffRequest> staff = new ArrayList<>();
+    List<String> staff = new ArrayList<>();
 
-    Department department;
+    String department;
 
 }

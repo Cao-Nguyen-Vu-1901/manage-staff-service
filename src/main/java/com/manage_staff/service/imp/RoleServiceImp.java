@@ -6,6 +6,7 @@ import com.manage_staff.entity.Role;
 import com.manage_staff.exception.AppException;
 import com.manage_staff.exception.ErrorCode;
 import com.manage_staff.mapper.RoleMapper;
+import com.manage_staff.repository.PermissionRepository;
 import com.manage_staff.repository.RoleRepository;
 import com.manage_staff.service.IRoleService;
 import lombok.AccessLevel;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,11 +25,19 @@ public class RoleServiceImp implements IRoleService {
 
     RoleRepository roleRepository;
     RoleMapper roleMapper;
+    PermissionRepository permissionRepository;
 
 
     @Override
     public List<RoleResponse> findAll() {
         return roleRepository.findAll()
+                .stream().map(roleMapper::toRoleResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoleResponse> findAllById(List<String> ids) {
+        return roleRepository.findAllById(ids)
                 .stream().map(roleMapper::toRoleResponse)
                 .collect(Collectors.toList());
     }
@@ -49,8 +59,17 @@ public class RoleServiceImp implements IRoleService {
 
     @Override
     public RoleResponse save(RoleRequest request) {
-        Role role = roleMapper.toRole(request);
-        return roleMapper.toRoleResponse(roleRepository.save(role));
+        List<Role> roles= roleRepository.findAllByName(request.getName());
+        if(!roles.isEmpty()){
+            throw new AppException(ErrorCode.ROLE_EXISTED);
+        }else {
+
+            Role role = roleMapper.toRole(request);
+            var permissionIds = request.getPermissions();
+            var permission = permissionRepository.findAllById(permissionIds);
+            role.setPermissions(new HashSet<>(permission));
+            return roleMapper.toRoleResponse(roleRepository.save(role));
+        }
     }
 
     @Override

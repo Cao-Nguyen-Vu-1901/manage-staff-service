@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IRewardDisciplineService {
     List<RewardDisciplineResponse> findAll();
+    List<RewardDisciplineResponse> findAllById( List<String> ids);
     List<RewardDisciplineResponse> findAllByNameLike(String name);
     RewardDisciplineResponse findById(String id);
 

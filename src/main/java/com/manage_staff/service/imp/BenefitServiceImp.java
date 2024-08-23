@@ -32,6 +32,13 @@ public class BenefitServiceImp implements IBenefitService {
     }
 
     @Override
+    public List<BenefitResponse> findAllById(List<String> ids) {
+        return benefitRepository.findAllById(ids)
+                .stream().map(benefitMapper::toBenefitResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public BenefitResponse findById(String id) {
         return benefitMapper.
                 toBenefitResponse(benefitRepository.findById(id)
@@ -45,7 +52,7 @@ public class BenefitServiceImp implements IBenefitService {
     }
 
     @Override
-    public void delete(String id) {
+    public void deleteById(String id) {
         benefitRepository.deleteById(id);
     }
 

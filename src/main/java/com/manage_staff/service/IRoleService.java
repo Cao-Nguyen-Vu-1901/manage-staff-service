@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IRoleService {
     List<RoleResponse> findAll();
+    List<RoleResponse> findAllById( List<String> ids);
     List<RoleResponse> findAllByNameLike(String name);
     RoleResponse findById(String id);
 

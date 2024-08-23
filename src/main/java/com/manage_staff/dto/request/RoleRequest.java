@@ -16,10 +16,10 @@ import java.util.Set;
 @Data
 public class RoleRequest {
 
-    String id;
-
     String name;
 
-    Set<PermissionRequest> permissions = new HashSet<>();
+    String description;
+
+    Set<String> permissions = new HashSet<>();
 
 }

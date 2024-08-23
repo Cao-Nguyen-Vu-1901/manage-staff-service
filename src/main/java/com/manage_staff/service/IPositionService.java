@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface IPositionService {
     List<PositionResponse> findAll();
+    List<PositionResponse> findAllById(List<String> ids);
     List<PositionResponse> findAllByNameLike(String name);
     PositionResponse findById(String id);
 

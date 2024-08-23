@@ -1,5 +1,6 @@
 package com.manage_staff.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,9 +16,11 @@ import java.io.Serializable;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PermissionResponse {
 
-    String id;
 
     String name;
+    String description;
+
 }

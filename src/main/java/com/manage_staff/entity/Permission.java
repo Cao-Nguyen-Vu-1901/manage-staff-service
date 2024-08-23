@@ -20,9 +20,9 @@ import java.io.Serializable;
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
 public class Permission implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
 
+    @Id
     String name;
+
+    String description;
 }

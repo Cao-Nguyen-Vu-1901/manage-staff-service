@@ -1,6 +1,7 @@
 package com.manage_staff.dto.response;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SocialInsuranceResponse {
 
     String id;

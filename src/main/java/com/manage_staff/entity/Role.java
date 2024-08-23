@@ -21,10 +21,9 @@ import java.util.Set;
 public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-
     String name;
+
+    String description;
 
     @ManyToMany
     Set<Permission> permissions = new HashSet<>();

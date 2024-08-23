@@ -21,7 +21,7 @@ public class SocialInsuranceRequest {
 
     String registrationArea;
 
-    StaffRequest staff;
+    String staff;
 
     String socialInsuranceId;
 }

@@ -7,7 +7,10 @@ import com.manage_staff.entity.Position;
 import com.manage_staff.exception.AppException;
 import com.manage_staff.exception.ErrorCode;
 import com.manage_staff.mapper.PositionMapper;
+import com.manage_staff.repository.DepartmentRepository;
+import com.manage_staff.repository.PayrollRepository;
 import com.manage_staff.repository.PositionRepository;
+import com.manage_staff.repository.StaffRepository;
 import com.manage_staff.service.IPositionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +27,20 @@ public class PositionServiceImp implements IPositionService {
 
     PositionMapper positionMapper;
     PositionRepository positionRepository;
+    StaffRepository staffRepository;
+    PayrollRepository payrollRepository;
+    DepartmentRepository departmentRepository;
+
     @Override
     public List<PositionResponse> findAll() {
         return positionRepository.findAll()
+                .stream().map(positionMapper::toPositionResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PositionResponse> findAllById(List<String> ids) {
+        return positionRepository.findAllById(ids)
                 .stream().map(positionMapper::toPositionResponse)
                 .collect(Collectors.toList());
     }
@@ -47,8 +61,29 @@ public class PositionServiceImp implements IPositionService {
 
     @Override
     public PositionResponse save(PositionRequest request) {
-        Position position = positionMapper.toPosition(request);
-        return positionMapper.toPositionResponse(positionRepository.save(position));
+        if(positionRepository.findAllByName(request.getName()).getFirst() != null){
+            throw new AppException(ErrorCode.POSITION_EXISTED);
+        } else {
+            Position position = positionMapper.toPosition(request);
+            if (request.getStaff() != null) {
+                var listStringStaff = request.getStaff();
+                var staff = staffRepository.findAllById(listStringStaff);
+                position.setStaff(staff);
+            }
+            if(request.getPayroll() != null){
+                String payrollId = request.getPayroll();
+                var payroll = payrollRepository.findById(payrollId).orElseThrow( () -> new AppException(ErrorCode.PAYROLL_NOT_EXISTED));
+                position.setPayroll(payroll);
+            }
+            if (request.getDepartment() != null) {
+                String departmentId = request.getDepartment();
+                var department = departmentRepository.findById(departmentId)
+                        .orElseThrow(
+                                () -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
+                position.setDepartment(department);
+            }
+            return positionMapper.toPositionResponse(positionRepository.save(position));
+        }
     }
 
     @Override

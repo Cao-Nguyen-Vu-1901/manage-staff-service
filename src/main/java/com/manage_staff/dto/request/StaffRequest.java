@@ -1,6 +1,7 @@
 package com.manage_staff.dto.request;
 
 import com.manage_staff.entity.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -24,6 +25,12 @@ public class StaffRequest {
 
     String gender;
 
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+    String email;
+
+    @Pattern(regexp = "^\\d{10}$")
+    String phoneNumber;
+
     String address;
 
     String username;
@@ -38,16 +45,16 @@ public class StaffRequest {
 
     LocalDate createDate;
 
-    List<Certification> certifications = new ArrayList<>();
+    List<String> certifications = new ArrayList<>();
 
-    SocialInsurance socialInsurance;
+    String socialInsurance;
 
-    List<RewardDiscipline> rewardDisciplines = new ArrayList<>();
+    List<String> rewardDisciplines = new ArrayList<>();
 
-    List<LeaveDay> leaves = new ArrayList<>();
+    List<String> leaves = new ArrayList<>();
 
-    List<Benefit> benefits = new ArrayList<>();
+    List<String> benefits = new ArrayList<>();
 
-    Set<RoleRequest> roles = new HashSet<>();
+    Set<String> roles = new HashSet<>();
 }
 

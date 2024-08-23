@@ -10,11 +10,12 @@ import java.util.List;
 public interface ICertificationService {
 
     List<CertificationResponse> findAll();
-    CertificationResponse findById(String id);
+    List<CertificationResponse> findAllById( List<String> ids);
+    CertificationResponse findById( String id);
 
     CertificationResponse save(CertificationRequest request);
 
-    void delete(String id);
+    void deleteById(String id);
     void deleteAllById(List<String> ids);
     void deleteAll();
 }

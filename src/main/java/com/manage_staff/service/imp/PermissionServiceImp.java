@@ -32,6 +32,12 @@ public class PermissionServiceImp implements IPermissionService {
     }
 
     @Override
+    public List<PermissionResponse> findAllById(List<String> ids) {
+        return permissionRepository.findAllById(ids)
+                .stream().map(permissionMapper::toPermissionResponse).collect(Collectors.toList());
+    }
+
+    @Override
     public List<PermissionResponse> findAllByNameLike(String name) {
         return permissionRepository.findAllByNameLike("%" + name + "%")
                 .stream().map(permissionMapper::toPermissionResponse)

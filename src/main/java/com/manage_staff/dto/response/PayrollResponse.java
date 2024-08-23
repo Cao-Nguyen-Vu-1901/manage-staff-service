@@ -1,5 +1,6 @@
 package com.manage_staff.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.manage_staff.entity.Position;
 import jakarta.persistence.FetchType;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PayrollResponse {
 
     String id;
@@ -24,5 +26,5 @@ public class PayrollResponse {
 
     BigDecimal basicSalary;
 
-    List<Position> positions = new ArrayList<>();
+    List<PositionResponse> positions = new ArrayList<>();
 }

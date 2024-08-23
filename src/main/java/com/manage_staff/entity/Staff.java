@@ -2,6 +2,7 @@ package com.manage_staff.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -31,6 +32,10 @@ public class Staff  implements Serializable {
 
     String gender;
 
+    String email;
+
+    String phoneNumber;
+
     String address;
 
     String username;
@@ -38,6 +43,8 @@ public class Staff  implements Serializable {
     String password;
 
     boolean status;
+
+    String image;
 
     boolean accountVerified;
 

@@ -7,6 +7,7 @@ import com.manage_staff.exception.AppException;
 import com.manage_staff.exception.ErrorCode;
 import com.manage_staff.mapper.SocialInsuranceMapper;
 import com.manage_staff.repository.SocialInsuranceRepository;
+import com.manage_staff.repository.StaffRepository;
 import com.manage_staff.service.ISocialInsuranceService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
     SocialInsuranceRepository socialInsuranceRepository;
 
     SocialInsuranceMapper socialInsuranceMapper;
+    StaffRepository staffRepository;
 
 
     @Override
@@ -43,6 +45,11 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
     @Override
     public SocialInsuranceResponse save(SocialInsuranceRequest request) {
         SocialInsurance socialInsurance = socialInsuranceMapper.toSocialInsurance(request);
+
+        var staff = staffRepository.findById(request.getStaff())
+                .orElseThrow( () -> new AppException(ErrorCode.STAFF_NOT_EXISTED) );
+        socialInsurance.setStaff(staff);
+
         return socialInsuranceMapper
                 .toSocialInsuranceResponse(socialInsuranceRepository.save(socialInsurance));
     }

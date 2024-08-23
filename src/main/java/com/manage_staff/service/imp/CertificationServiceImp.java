@@ -3,11 +3,15 @@ package com.manage_staff.service.imp;
 import com.manage_staff.dto.request.CertificationRequest;
 import com.manage_staff.dto.response.CertificationResponse;
 import com.manage_staff.entity.Certification;
+import com.manage_staff.entity.Staff;
 import com.manage_staff.exception.AppException;
 import com.manage_staff.exception.ErrorCode;
 import com.manage_staff.mapper.CertificationMapper;
+import com.manage_staff.mapper.StaffMapper;
 import com.manage_staff.repository.CertificationRepository;
+import com.manage_staff.repository.StaffRepository;
 import com.manage_staff.service.ICertificationService;
+import com.manage_staff.service.IStaffService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,10 +29,19 @@ public class CertificationServiceImp implements ICertificationService {
 
     CertificationMapper certificationMapper;
 
+    StaffRepository staffRepository;
+
     @Override
     public List<CertificationResponse> findAll() {
         return certificationRepository.findAll()
                 .stream().map(certificationMapper :: toCertificationResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CertificationResponse> findAllById(List<String> ids) {
+        return certificationRepository.findAllById(ids)
+                .stream().map(certificationMapper::toCertificationResponse)
                 .collect(Collectors.toList());
     }
 
@@ -42,12 +55,15 @@ public class CertificationServiceImp implements ICertificationService {
     @Override
     public CertificationResponse save(CertificationRequest request) {
         Certification certification = certificationMapper.toCertification(request);
+        String staffId = request.getStaff();
+        var staff = staffRepository.findById(staffId).orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_EXISTED));
+        certification.setStaff(staff);
         return certificationMapper
                 .toCertificationResponse(certificationRepository.save(certification));
     }
 
     @Override
-    public void delete(String id) {
+    public void deleteById(String id) {
         certificationRepository.deleteById(id);
     }
 

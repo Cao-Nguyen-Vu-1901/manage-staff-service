@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ILeaveDayService {
     List<LeaveDayResponse> findAll();
+    List<LeaveDayResponse> findAllById( List<String> ids);
     List<LeaveDayResponse> findAllByNameLike(String name);
     LeaveDayResponse findById(String id);
 

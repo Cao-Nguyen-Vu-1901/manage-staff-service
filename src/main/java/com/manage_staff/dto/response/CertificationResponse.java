@@ -1,9 +1,6 @@
 package com.manage_staff.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CertificationResponse {
 
     String id;

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IPermissionService {
     List<PermissionResponse> findAll();
+    List<PermissionResponse> findAllById( List<String> ids);
     List<PermissionResponse> findAllByNameLike(String name);
     PermissionResponse findById(String id);
 

@@ -1,9 +1,6 @@
 package com.manage_staff.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.manage_staff.entity.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +17,7 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StaffResponse {
 
     String id;
@@ -30,11 +28,17 @@ public class StaffResponse {
 
     String gender;
 
+    String email;
+
+    String phoneNumber;
+
     String address;
 
     String username;
 
     String password;
+
+    String image;
 
     boolean status;
 

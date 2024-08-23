@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, String> {
     List<Staff> findAllByNameLike(String name);
+    Staff findByUsername( String username);
 }

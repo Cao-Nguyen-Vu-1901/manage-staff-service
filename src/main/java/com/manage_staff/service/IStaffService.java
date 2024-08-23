@@ -10,6 +10,9 @@ import java.util.List;
 public interface IStaffService {
     List<StaffResponse> findAll();
 
+    List<StaffResponse> findAllById( List<String> ids);
+
+
     List<StaffResponse> findAllByNameLike(String name);
     StaffResponse findById(String id);
 

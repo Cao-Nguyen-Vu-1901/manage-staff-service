@@ -32,6 +32,13 @@ public class RewardDisciplineServiceImp  implements IRewardDisciplineService {
     }
 
     @Override
+    public List<RewardDisciplineResponse> findAllById(List<String> ids) {
+        return rewardDisciplineRepository.findAllById(ids)
+                .stream().map(rewardDisciplineMapper::toRewardDisciplineResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<RewardDisciplineResponse> findAllByNameLike(String name) {
         return rewardDisciplineRepository.findAllByNameLike("%" + name + "%")
                 .stream().map(rewardDisciplineMapper::toRewardDisciplineResponse)

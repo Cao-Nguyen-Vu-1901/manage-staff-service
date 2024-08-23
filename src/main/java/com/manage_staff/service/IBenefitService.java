@@ -8,11 +8,12 @@ import java.util.List;
 
 public interface IBenefitService {
     List<BenefitResponse> findAll();
+    List<BenefitResponse> findAllById( List<String> ids);
     BenefitResponse findById(String id);
 
     BenefitResponse save(BenefitRequest benefitRequest);
 
-    void delete(String id);
+    void deleteById(String id);
     void deleteAllById(List<String> ids);
     void deleteAll();
 

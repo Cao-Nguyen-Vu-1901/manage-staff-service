@@ -11,4 +11,6 @@ import java.util.List;
 public interface PositionRepository extends JpaRepository<Position, String> {
     List<Position> findAllByNameLike(String name);
 
+    List<Position> findAllByName(String name);
+
 }

@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Data
 public class PermissionRequest  {
 
-    String id;
-
     String name;
+    String description;
+
 }

@@ -20,6 +20,6 @@ public class CertificationRequest {
 
     LocalDate expiryDate;
 
-    StaffRequest staff;
+    String staff;
 }
 
