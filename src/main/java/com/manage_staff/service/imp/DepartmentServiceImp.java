@@ -50,9 +50,6 @@ public class DepartmentServiceImp implements IDepartmentService {
     @Override
     public DepartmentResponse save(DepartmentRequest request) {
         Department department = departmentMapper.toDepartment(request);
-        var listPosStrings = request.getPositions();
-        var positions = positionRepository.findAllById(listPosStrings);
-        department.setPositions(positions);
         return departmentMapper.toDepartmentResponse(departmentRepository.save(department));
     }
 

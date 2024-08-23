@@ -61,15 +61,11 @@ public class PositionServiceImp implements IPositionService {
 
     @Override
     public PositionResponse save(PositionRequest request) {
-        if(positionRepository.findAllByName(request.getName()).getFirst() != null){
+        if(!positionRepository.findAllByName(request.getName()).isEmpty()){
             throw new AppException(ErrorCode.POSITION_EXISTED);
         } else {
             Position position = positionMapper.toPosition(request);
-            if (request.getStaff() != null) {
-                var listStringStaff = request.getStaff();
-                var staff = staffRepository.findAllById(listStringStaff);
-                position.setStaff(staff);
-            }
+
             if(request.getPayroll() != null){
                 String payrollId = request.getPayroll();
                 var payroll = payrollRepository.findById(payrollId).orElseThrow( () -> new AppException(ErrorCode.PAYROLL_NOT_EXISTED));

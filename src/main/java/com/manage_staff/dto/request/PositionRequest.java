@@ -21,8 +21,6 @@ public class PositionRequest {
 
     String payroll;
 
-    List<String> staff = new ArrayList<>();
-
     String department;
 
 }

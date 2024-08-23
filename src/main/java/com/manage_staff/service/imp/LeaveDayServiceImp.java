@@ -30,7 +30,6 @@ public class LeaveDayServiceImp implements ILeaveDayService {
                 .stream().map(leaveDayMapper::toLeaveDayResponse)
                 .collect(Collectors.toList());
     }
-
     @Override
     public List<LeaveDayResponse> findAllById(List<String> ids) {
         return leaveDayRepository.findAllById(ids)

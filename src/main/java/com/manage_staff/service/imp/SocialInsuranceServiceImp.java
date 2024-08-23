@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,8 +51,14 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
                 .orElseThrow( () -> new AppException(ErrorCode.STAFF_NOT_EXISTED) );
         socialInsurance.setStaff(staff);
 
-        return socialInsuranceMapper
-                .toSocialInsuranceResponse(socialInsuranceRepository.save(socialInsurance));
+        try{
+            return socialInsuranceMapper
+                    .toSocialInsuranceResponse(socialInsuranceRepository.save(socialInsurance));
+        }catch (AppException e){
+            throw new AppException(ErrorCode.STAFF_HAVE_SOCIAL_INSURANCE);
+        }
+
+
     }
 
     @Override

@@ -39,6 +39,13 @@ public enum ErrorCode {
     ROLE_NOT_EXISTED(1209, "Role is not exited", HttpStatus.NOT_FOUND) ,
     SOCIAL_INSURANCE_NOT_EXISTED(1210, "Social insurance is not exited", HttpStatus.NOT_FOUND) ,
     STAFF_NOT_EXISTED(1211, "Staff is not exited", HttpStatus.NOT_FOUND) ,
+
+    DATE_INVALID(1301, "Date invalid", HttpStatus.BAD_REQUEST) ,
+    VALUE_INVALID(1301, "Value invalid", HttpStatus.BAD_REQUEST) ,
+
+    STAFF_HAVE_SOCIAL_INSURANCE(1401, "Staff have social insurance", HttpStatus.INTERNAL_SERVER_ERROR) ,
+
+
     ;
 
     ErrorCode(int code, String message, HttpStatusCode status) {

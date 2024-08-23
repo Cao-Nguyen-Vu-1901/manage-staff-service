@@ -22,5 +22,4 @@ public class RewardDisciplineRequest {
 
     LocalDate expiryDate;
 
-    String creatorId;
 }

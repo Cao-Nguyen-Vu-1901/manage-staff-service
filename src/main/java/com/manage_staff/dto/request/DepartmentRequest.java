@@ -17,6 +17,4 @@ public class DepartmentRequest {
 
     String description;
 
-    List<String> positions = new ArrayList<>();
-
 }

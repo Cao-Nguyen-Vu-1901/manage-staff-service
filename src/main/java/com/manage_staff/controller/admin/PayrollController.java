@@ -37,6 +37,7 @@ public class PayrollController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<String> delete(@PathVariable String id){
+        payrollService.deleteById(id);
         return ApiResponse.<String>builder().result("Payroll has been delete").build();
     }
 }
