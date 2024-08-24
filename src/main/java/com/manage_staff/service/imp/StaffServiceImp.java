@@ -16,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -102,6 +103,46 @@ public class StaffServiceImp implements IStaffService {
     @Override
     public void deleteAll() {
         staffRepository.deleteAll();
+    }
+
+    @Override
+    public Page<StaffResponse> findAllPaging(int currentPage, int pageSize, String sortBy, String orderBy) {
+        Pageable pageable = null;
+        if(sortBy != null){
+            pageable = PageRequest.of(currentPage - 1, pageSize,
+                    Sort.by( orderBy != null && orderBy.equals("DESC")
+                            ? Sort.Direction.DESC
+                            : Sort.Direction.ASC, sortBy));
+        }else{
+            pageable = PageRequest.of(currentPage - 1, pageSize);
+
+        }
+        return staffRepository.findAll(pageable).map(positionMapper::staffToStaffResponse);
+    }
+
+    @Override
+    public Page<StaffResponse> findAllByDobPaging(int currentPage, int pageSize, String type, String value, String sortBy, String orderBy) {
+        Pageable pageable = null;
+        Page<StaffResponse> staffResponses ;
+        if(sortBy != null){
+            pageable = PageRequest.of(currentPage - 1, pageSize,
+                    Sort.by( orderBy != null && orderBy.equals("DESC")
+                            ? Sort.Direction.DESC
+                            : Sort.Direction.ASC, sortBy));
+        }else{
+            pageable = PageRequest.of(currentPage - 1, pageSize);
+        }
+        if(type != null){
+             staffResponses = switch (type) {
+                 case "" -> staffRepository.findAllByNameLike( pageable, "%" + value + "%")
+                         .map(positionMapper::staffToStaffResponse);
+                 default -> null;
+             };
+
+        }else{
+
+        }
+        return null;
     }
 
 

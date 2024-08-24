@@ -31,6 +31,9 @@ public interface IStaffService {
 
     void deleteAll();
 
+    Page<StaffResponse> findAllPaging(int currentPage, int pageSize, String sortBy, String orderBy);
+
+    Page<StaffResponse> findAllByDobPaging(int currentPage, int pageSize, String type, String value, String sortBy, String orderBy);
 
 
 }

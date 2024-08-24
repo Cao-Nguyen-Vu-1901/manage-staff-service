@@ -18,4 +18,5 @@ public class PagingResponse<T> {
     T result;
     String type;
     String value;
+    String sortBy;
 }

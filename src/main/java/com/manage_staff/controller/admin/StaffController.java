@@ -44,6 +44,33 @@ public class StaffController {
                 ).build();
     }
 
+    @GetMapping("/view")
+    public PagingResponse<List<StaffResponse>> paging(@RequestParam(defaultValue = "1") int currentPage,
+                                                      @RequestParam(defaultValue = "9") int pageSize,
+                                                      String type, String value, String sortBy, String orderBy){
+        List<StaffResponse> staff = null;
+        if(type != null && value != null){
+            staff = staffService
+                    .findAllByDobPaging(currentPage, pageSize, type, value, sortBy, orderBy)
+                    .getContent().stream()
+                    .map(positionMapper::staffToStaffResponse)
+                    .collect(Collectors.toList());
+        }else if(value != null){
+            staff = staffService.findAllByDobPaging(currentPage, pageSize, null, value, sortBy, orderBy)
+                    .getContent().stream()
+                    .map(positionMapper::staffToStaffResponse)
+                    .collect(Collectors.toList());
+        }else {
+            staff = staffService.findAllPaging(currentPage, pageSize, sortBy, orderBy)
+                    .getContent().stream()
+                    .map(positionMapper::staffToStaffResponse)
+                    .collect(Collectors.toList());
+        }
+        return PagingResponse.<List<StaffResponse>>builder()
+                .code(1000).currentPage(currentPage).pageSize(pageSize).sortBy(sortBy)
+                .type(type).value(value).result(staff)
+                .build();
+    }
 
     @PostMapping
     public ApiResponse<StaffResponse> save(@Valid @RequestBody StaffRequest request){
