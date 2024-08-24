@@ -14,6 +14,7 @@ public interface IPermissionService {
     PermissionResponse findById(String id);
 
     PermissionResponse save(PermissionRequest request);
+    PermissionResponse update(String id, PermissionRequest request);
 
     void deleteById(String id);
 

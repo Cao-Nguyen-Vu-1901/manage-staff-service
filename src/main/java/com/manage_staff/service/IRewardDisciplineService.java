@@ -14,6 +14,7 @@ public interface IRewardDisciplineService {
     RewardDisciplineResponse findById(String id);
 
     RewardDisciplineResponse save(RewardDisciplineRequest request);
+    RewardDisciplineResponse update(String id, RewardDisciplineRequest request);
 
     void deleteById(String id);
 

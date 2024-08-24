@@ -33,7 +33,7 @@ public class BenefitController {
     }
 
     @PostMapping
-    public ApiResponse<BenefitResponse> save(@Valid @RequestBody BenefitRequest request){
+    public ApiResponse<BenefitResponse> create(@Valid @RequestBody BenefitRequest request){
         return ApiResponse.<BenefitResponse>builder()
                 .result(benefitService.save(request)).build();
     }
@@ -42,5 +42,11 @@ public class BenefitController {
     public ApiResponse<String> delete(@PathVariable String id){
         benefitService.deleteById(id);
         return ApiResponse.<String>builder().result("Benefit has been delete").build();
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<BenefitResponse> update(@PathVariable String id, @Valid @RequestBody BenefitRequest request){
+        return ApiResponse.<BenefitResponse>builder()
+                .code(1000).result(benefitService.update(id, request)).build();
     }
 }

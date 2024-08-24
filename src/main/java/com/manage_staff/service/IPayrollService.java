@@ -13,6 +13,8 @@ public interface IPayrollService {
 
     PayrollResponse save(PayrollRequest request);
 
+    PayrollResponse update(String id, PayrollRequest request);
+
     void deleteById(String id);
 
     void deleteAllById(List<String> ids);

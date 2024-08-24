@@ -45,6 +45,14 @@ public class PayrollServiceImp implements IPayrollService {
     }
 
     @Override
+    public PayrollResponse update(String id, PayrollRequest request) {
+        Payroll payroll = payrollRepository.findById(id)
+                .orElseThrow( ()-> new AppException(ErrorCode.PAYROLL_NOT_EXISTED));
+        payrollMapper.updatePayroll(payroll,request);
+        return payrollMapper.toPayrollResponse(payrollRepository.save(payroll));
+    }
+
+    @Override
     public void deleteById(String id) {
         payrollRepository.deleteById(id);
     }

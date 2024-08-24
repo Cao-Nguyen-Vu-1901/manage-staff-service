@@ -1,6 +1,7 @@
 package com.manage_staff.controller.admin;
 
 import com.manage_staff.dto.request.RoleRequest;
+import com.manage_staff.dto.request.RoleUpdateRequest;
 import com.manage_staff.dto.response.ApiResponse;
 import com.manage_staff.dto.response.RoleResponse;
 import com.manage_staff.service.IRoleService;
@@ -39,5 +40,11 @@ public class RoleController {
     public ApiResponse<String> delete( @PathVariable String id){
         roleService.deleteById(id);
         return ApiResponse.<String>builder().result("Role has been delete").build();
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<RoleResponse> delete( @PathVariable String id, @Valid @RequestBody RoleUpdateRequest request){
+        return ApiResponse.<RoleResponse>builder()
+                .code(1000).result(roleService.update(id,request)).build();
     }
 }

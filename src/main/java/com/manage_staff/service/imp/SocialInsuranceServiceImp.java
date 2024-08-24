@@ -1,6 +1,7 @@
 package com.manage_staff.service.imp;
 
 import com.manage_staff.dto.request.SocialInsuranceRequest;
+import com.manage_staff.dto.request.SocialInsuranceUpdateRequest;
 import com.manage_staff.dto.response.SocialInsuranceResponse;
 import com.manage_staff.entity.SocialInsurance;
 import com.manage_staff.exception.AppException;
@@ -59,6 +60,15 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
         }
 
 
+    }
+
+    @Override
+    public SocialInsuranceResponse update(String id, SocialInsuranceUpdateRequest request) {
+        SocialInsurance socialInsurance = socialInsuranceRepository.findById(id)
+                .orElseThrow( () -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
+        socialInsuranceMapper.updateSocialInsurance(socialInsurance,request);
+
+        return socialInsuranceMapper.toSocialInsuranceResponse(socialInsuranceRepository.save(socialInsurance));
     }
 
     @Override

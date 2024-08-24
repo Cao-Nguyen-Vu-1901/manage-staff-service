@@ -32,7 +32,7 @@ public class LeaveDayController {
     }
 
     @PostMapping
-    public ApiResponse<LeaveDayResponse> save(@Valid @RequestBody LeaveDayRequest leaveDayRequest){
+    public ApiResponse<LeaveDayResponse> create(@Valid @RequestBody LeaveDayRequest leaveDayRequest){
         return ApiResponse.<LeaveDayResponse>builder().result(leaveDayService.save(leaveDayRequest)).build();
     }
 
@@ -40,5 +40,11 @@ public class LeaveDayController {
     public ApiResponse<String> delete(@PathVariable String id){
         leaveDayService.deleteById(id);
         return ApiResponse.<String>builder().result("Leave day has been delete").build();
+    }
+    @PutMapping("/{id}")
+    public ApiResponse<LeaveDayResponse> update(@PathVariable String id, @RequestBody LeaveDayRequest request ){
+        return ApiResponse.<LeaveDayResponse>builder()
+                .code(1000).result(leaveDayService.update(id,request))
+                .build();
     }
 }

@@ -13,6 +13,8 @@ public interface IDepartmentService {
 
     DepartmentResponse save(DepartmentRequest request);
 
+    DepartmentResponse update(String id, DepartmentRequest request);
+
     void deleteById(String id);
 
     void deleteAllById(List<String> ids);

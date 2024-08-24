@@ -7,6 +7,7 @@ import com.manage_staff.entity.Department;
 import com.manage_staff.entity.Position;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 import java.util.ArrayList;
@@ -34,4 +35,6 @@ public interface DepartmentMapper {
     @Mapping(target = "department", ignore = true)
     @Mapping(target = "payroll.positions", ignore = true)
     PositionResponse positionToPositionResponse(Position position);
+
+    void updateDepartment(@MappingTarget Department department, DepartmentRequest request);
 }

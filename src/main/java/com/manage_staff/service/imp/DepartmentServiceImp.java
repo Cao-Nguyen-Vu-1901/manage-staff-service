@@ -54,6 +54,17 @@ public class DepartmentServiceImp implements IDepartmentService {
     }
 
     @Override
+    public DepartmentResponse update(String id, DepartmentRequest request) {
+
+        Department department = departmentRepository.findById(id)
+                .orElseThrow( () -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
+
+        departmentMapper.updateDepartment(department,request);
+
+        return departmentMapper.toDepartmentResponse(departmentRepository.save(department));
+    }
+
+    @Override
     public void deleteById(String id) {
         departmentRepository.deleteById(id);
     }

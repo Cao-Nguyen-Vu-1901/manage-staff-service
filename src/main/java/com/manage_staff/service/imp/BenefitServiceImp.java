@@ -52,6 +52,14 @@ public class BenefitServiceImp implements IBenefitService {
     }
 
     @Override
+    public BenefitResponse update(String id, BenefitRequest benefitRequest) {
+        Benefit benefit = benefitRepository.findById(id)
+                .orElseThrow( () -> new AppException(ErrorCode.BENEFIT_NOT_EXISTED));
+        benefitMapper.updateBenefit(benefit, benefitRequest);
+        return benefitMapper.toBenefitResponse(benefitRepository.save(benefit));
+    }
+
+    @Override
     public void deleteById(String id) {
         benefitRepository.deleteById(id);
     }

@@ -58,6 +58,15 @@ public class RewardDisciplineServiceImp  implements IRewardDisciplineService {
     }
 
     @Override
+    public RewardDisciplineResponse update(String id, RewardDisciplineRequest request) {
+        RewardDiscipline rewardDiscipline = rewardDisciplineRepository
+                .findById(id).orElseThrow( () -> new AppException(ErrorCode.REWARD_DISCIPLINE_NOT_EXISTED));
+        rewardDisciplineMapper.updateRewardDiscipline(rewardDiscipline, request);
+
+        return rewardDisciplineMapper.toRewardDisciplineResponse(rewardDisciplineRepository.save(rewardDiscipline));
+    }
+
+    @Override
     public void deleteById(String id) {
         rewardDisciplineRepository.deleteById(id);
     }

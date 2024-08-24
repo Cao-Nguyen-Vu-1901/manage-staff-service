@@ -30,7 +30,7 @@ public class SocialInsurance implements Serializable {
 
     String registrationArea;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},fetch = FetchType.EAGER)
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     Staff staff;
 

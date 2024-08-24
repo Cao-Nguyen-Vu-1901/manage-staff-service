@@ -57,6 +57,15 @@ public class LeaveDayServiceImp implements ILeaveDayService {
     }
 
     @Override
+    public LeaveDayResponse update(String id, LeaveDayRequest request) {
+        LeaveDay leaveDay = leaveDayRepository.findById(id)
+                .orElseThrow( ()-> new AppException(ErrorCode.LEAVE_DAY_NOT_EXISTED));
+        leaveDayMapper.updateLeaveDay(leaveDay,request);
+        return leaveDayMapper
+                .toLeaveDayResponse(leaveDayRepository.save(leaveDay));
+    }
+
+    @Override
     public void deleteById(String id) {
         leaveDayRepository.deleteById(id);
     }

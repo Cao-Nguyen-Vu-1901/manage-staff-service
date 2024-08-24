@@ -48,6 +48,8 @@ public class StaffResponse {
 
     LocalDate createDate;
 
+    LocalDate promotionDate;
+
     List<CertificationResponse> certifications = new ArrayList<>();
 
     SocialInsuranceResponse socialInsurance;

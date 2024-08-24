@@ -1,6 +1,7 @@
 package com.manage_staff.controller.admin;
 
 import com.manage_staff.dto.request.CertificationRequest;
+import com.manage_staff.dto.request.CertificationUpdateRequest;
 import com.manage_staff.dto.request.SocialInsuranceRequest;
 import com.manage_staff.dto.response.ApiResponse;
 import com.manage_staff.dto.response.CertificationResponse;
@@ -33,7 +34,7 @@ public class CertificationController {
     }
 
     @PostMapping
-    public ApiResponse<CertificationResponse> save(@Valid @RequestBody CertificationRequest request){
+    public ApiResponse<CertificationResponse> create(@Valid @RequestBody CertificationRequest request){
         return ApiResponse.<CertificationResponse>builder().result(certificationService.save(request)).build();
     }
 
@@ -41,5 +42,11 @@ public class CertificationController {
     public ApiResponse<String> delete(@PathVariable String id){
         certificationService.deleteById(id);
         return ApiResponse.<String>builder().result("Permission has been delete").build();
+    }
+    @PutMapping("/{id}")
+    public ApiResponse<CertificationResponse> update(@PathVariable String id, @RequestBody CertificationUpdateRequest request){
+        certificationService.update(id, request);
+        return ApiResponse.<CertificationResponse>builder()
+                .result(certificationService.update(id, request)).build();
     }
 }

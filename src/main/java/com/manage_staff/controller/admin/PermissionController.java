@@ -31,7 +31,7 @@ public class PermissionController {
     }
 
     @PostMapping
-    public ApiResponse<PermissionResponse> save(@Valid @RequestBody PermissionRequest request){
+    public ApiResponse<PermissionResponse> create(@Valid @RequestBody PermissionRequest request){
         return ApiResponse.<PermissionResponse>builder().result(permissionService.save(request)).build();
     }
 
@@ -40,4 +40,5 @@ public class PermissionController {
         permissionService.deleteById(id);
         return ApiResponse.<String>builder().result("Permission has been delete").build();
     }
+
 }

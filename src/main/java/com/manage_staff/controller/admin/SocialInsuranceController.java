@@ -1,6 +1,7 @@
 package com.manage_staff.controller.admin;
 
 import com.manage_staff.dto.request.SocialInsuranceRequest;
+import com.manage_staff.dto.request.SocialInsuranceUpdateRequest;
 import com.manage_staff.dto.response.ApiResponse;
 import com.manage_staff.dto.response.SocialInsuranceResponse;
 import com.manage_staff.service.ISocialInsuranceService;
@@ -38,6 +39,14 @@ public class SocialInsuranceController {
     @DeleteMapping("/{id}")
     public ApiResponse<String> delete(@PathVariable String id){
         socialInsuranceService.deleteById(id);
-        return ApiResponse.<String>builder().result("Permission has been delete").build();
+        return ApiResponse.<String>builder().result("Social insurance has been delete").build();
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<SocialInsuranceResponse> delete(@PathVariable String id,
+                                                       @Valid @RequestBody SocialInsuranceUpdateRequest request){
+
+        return ApiResponse.<SocialInsuranceResponse>builder()
+                .code(1000).result(socialInsuranceService.update(id, request)).build();
     }
 }

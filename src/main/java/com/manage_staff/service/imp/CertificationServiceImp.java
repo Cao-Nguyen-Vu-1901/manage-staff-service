@@ -1,6 +1,7 @@
 package com.manage_staff.service.imp;
 
 import com.manage_staff.dto.request.CertificationRequest;
+import com.manage_staff.dto.request.CertificationUpdateRequest;
 import com.manage_staff.dto.response.CertificationResponse;
 import com.manage_staff.entity.Certification;
 import com.manage_staff.entity.Staff;
@@ -60,6 +61,18 @@ public class CertificationServiceImp implements ICertificationService {
         certification.setStaff(staff);
         return certificationMapper
                 .toCertificationResponse(certificationRepository.save(certification));
+    }
+
+    @Override
+    public CertificationResponse update(String id, CertificationUpdateRequest request) {
+
+        Certification certification = certificationRepository.findById(id)
+                .orElseThrow( () -> new AppException(ErrorCode.CERTIFICATION_NOT_EXISTED) );
+
+        certificationMapper.updateCertification(certification,request);
+
+
+        return certificationMapper.toCertificationResponse(certificationRepository.save(certification));
     }
 
     @Override

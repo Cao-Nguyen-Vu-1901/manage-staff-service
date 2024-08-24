@@ -1,6 +1,5 @@
 package com.manage_staff.dto.request;
 
-import com.manage_staff.entity.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +17,7 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
-public class StaffRequest {
+public class StaffUpdateRequest {
 
     String name;
 
@@ -38,17 +37,7 @@ public class StaffRequest {
 
     String address;
 
-    String username;
-
     String password;
-
-    boolean status;
-
-    boolean accountVerified;
-
-    int failedLoginAttempts;
-
-    LocalDate createDate;
 
     LocalDate promotionDate;
 

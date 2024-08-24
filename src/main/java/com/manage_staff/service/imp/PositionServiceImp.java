@@ -2,10 +2,12 @@ package com.manage_staff.service.imp;
 
 import com.manage_staff.dto.request.PermissionRequest;
 import com.manage_staff.dto.request.PositionRequest;
+import com.manage_staff.dto.request.PositionUpdateRequest;
 import com.manage_staff.dto.response.PositionResponse;
 import com.manage_staff.entity.Position;
 import com.manage_staff.exception.AppException;
 import com.manage_staff.exception.ErrorCode;
+import com.manage_staff.mapper.DepartmentMapper;
 import com.manage_staff.mapper.PositionMapper;
 import com.manage_staff.repository.DepartmentRepository;
 import com.manage_staff.repository.PayrollRepository;
@@ -30,6 +32,7 @@ public class PositionServiceImp implements IPositionService {
     StaffRepository staffRepository;
     PayrollRepository payrollRepository;
     DepartmentRepository departmentRepository;
+    private final DepartmentMapper departmentMapper;
 
     @Override
     public List<PositionResponse> findAll() {
@@ -80,6 +83,24 @@ public class PositionServiceImp implements IPositionService {
             }
             return positionMapper.toPositionResponse(positionRepository.save(position));
         }
+    }
+
+    @Override
+    public PositionResponse update(String id, PositionUpdateRequest request) {
+        Position position = positionRepository.findById(id)
+                .orElseThrow( () -> new AppException(ErrorCode.POSITION_NOT_EXISTED));
+        if(request.getPayroll() != null){
+            var payrolls = payrollRepository.findById(request.getPayroll())
+                    .orElseThrow(()-> new AppException(ErrorCode.PAYROLL_NOT_EXISTED));
+            position.setPayroll(payrolls);
+        }
+        if(request.getDepartment() != null){
+            var department = departmentRepository.findById(request.getDepartment())
+                    .orElseThrow( () -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
+            position.setDepartment(department);
+        }
+        positionMapper.updatePosition(position,request);
+        return departmentMapper.positionToPositionResponse(positionRepository.save(position));
     }
 
     @Override

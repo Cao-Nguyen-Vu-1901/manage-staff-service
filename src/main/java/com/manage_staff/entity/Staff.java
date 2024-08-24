@@ -52,25 +52,25 @@ public class Staff  implements Serializable {
 
     LocalDate createDate;
 
+    LocalDate promotionDate;
 
     @OneToMany(mappedBy = "staff", fetch = FetchType.EAGER)
     @JsonIdentityReference(alwaysAsId = true)
     List<Certification> certifications = new ArrayList<>();
 
-
-    @OneToOne(mappedBy = "staff", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "staff", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     SocialInsurance socialInsurance;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     List<RewardDiscipline> rewardDisciplines = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     List<LeaveDay> leaves = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     List<Benefit> benefits = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     Set<Role> roles = new HashSet<>();
 
 }

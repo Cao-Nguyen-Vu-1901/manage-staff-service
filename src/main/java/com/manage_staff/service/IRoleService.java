@@ -2,6 +2,7 @@ package com.manage_staff.service;
 
 
 import com.manage_staff.dto.request.RoleRequest;
+import com.manage_staff.dto.request.RoleUpdateRequest;
 import com.manage_staff.dto.response.LeaveDayResponse;
 import com.manage_staff.dto.response.RoleResponse;
 
@@ -14,6 +15,7 @@ public interface IRoleService {
     RoleResponse findById(String id);
 
     RoleResponse save(RoleRequest request);
+    RoleResponse update(String id, RoleUpdateRequest request);
 
     void deleteById(String id);
 

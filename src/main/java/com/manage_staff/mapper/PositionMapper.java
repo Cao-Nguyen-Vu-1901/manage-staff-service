@@ -2,6 +2,7 @@ package com.manage_staff.mapper;
 
 import com.manage_staff.dto.request.PermissionRequest;
 import com.manage_staff.dto.request.PositionRequest;
+import com.manage_staff.dto.request.PositionUpdateRequest;
 import com.manage_staff.dto.response.CertificationResponse;
 import com.manage_staff.dto.response.PositionResponse;
 import com.manage_staff.dto.response.StaffResponse;
@@ -10,6 +11,7 @@ import com.manage_staff.entity.Position;
 import com.manage_staff.entity.Staff;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 import java.util.ArrayList;
@@ -43,4 +45,7 @@ public interface PositionMapper {
     @Mapping(target = "socialInsurance", ignore = true)
     StaffResponse staffToStaffResponse(Staff staff);
 
+    @Mapping(target = "payroll", ignore = true)
+    @Mapping(target = "department", ignore = true)
+    void updatePosition(@MappingTarget Position position, PositionUpdateRequest request);
 }

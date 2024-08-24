@@ -1,8 +1,12 @@
 package com.manage_staff.controller.admin;
 
 import com.manage_staff.dto.request.StaffRequest;
+import com.manage_staff.dto.request.StaffUpdateRequest;
 import com.manage_staff.dto.response.ApiResponse;
+import com.manage_staff.dto.response.PagingResponse;
 import com.manage_staff.dto.response.StaffResponse;
+import com.manage_staff.entity.Staff;
+import com.manage_staff.mapper.PositionMapper;
 import com.manage_staff.service.IStaffService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -13,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/staff")
@@ -21,6 +26,7 @@ import java.util.List;
 public class StaffController {
 
     IStaffService staffService;
+    private final PositionMapper positionMapper;
 
 
     @GetMapping
@@ -38,6 +44,7 @@ public class StaffController {
                 ).build();
     }
 
+
     @PostMapping
     public ApiResponse<StaffResponse> save(@Valid @RequestBody StaffRequest request){
         return ApiResponse.<StaffResponse>builder()
@@ -50,6 +57,15 @@ public class StaffController {
         staffService.deleteById(id);
         return ApiResponse.<String>builder()
                 .message("Staff have been delete")
+                .build();
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<StaffResponse> delete (@PathVariable String id,
+                                              @Valid @RequestBody StaffUpdateRequest request){
+
+        return ApiResponse.<StaffResponse>builder()
+                .code(1000).result(staffService.update(id, request))
                 .build();
     }
 }

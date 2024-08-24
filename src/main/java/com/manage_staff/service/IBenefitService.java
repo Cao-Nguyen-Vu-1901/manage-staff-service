@@ -13,6 +13,8 @@ public interface IBenefitService {
 
     BenefitResponse save(BenefitRequest benefitRequest);
 
+    BenefitResponse update(String id, BenefitRequest benefitRequest);
+
     void deleteById(String id);
     void deleteAllById(List<String> ids);
     void deleteAll();

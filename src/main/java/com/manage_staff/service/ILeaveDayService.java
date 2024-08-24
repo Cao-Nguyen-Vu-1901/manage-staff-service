@@ -16,6 +16,8 @@ public interface ILeaveDayService {
 
     LeaveDayResponse save(LeaveDayRequest request);
 
+    LeaveDayResponse update(String id, LeaveDayRequest request);
+
     void deleteById(String id);
 
     void deleteAllById(List<String> ids);

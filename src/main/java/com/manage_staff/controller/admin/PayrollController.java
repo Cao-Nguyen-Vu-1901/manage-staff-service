@@ -31,7 +31,7 @@ public class PayrollController {
     }
 
     @PostMapping
-    public ApiResponse<PayrollResponse> save(@Valid @RequestBody PayrollRequest request){
+    public ApiResponse<PayrollResponse> create(@Valid @RequestBody PayrollRequest request){
         return ApiResponse.<PayrollResponse>builder().result(payrollService.save(request)).build();
     }
 
@@ -39,5 +39,10 @@ public class PayrollController {
     public ApiResponse<String> delete(@PathVariable String id){
         payrollService.deleteById(id);
         return ApiResponse.<String>builder().result("Payroll has been delete").build();
+    }
+    @PutMapping("/{id}")
+    public ApiResponse<PayrollResponse> update(@PathVariable String id, @RequestBody PayrollRequest request){
+        return ApiResponse.<PayrollResponse>builder()
+                .code(1000).result(payrollService.update(id, request)).build();
     }
 }

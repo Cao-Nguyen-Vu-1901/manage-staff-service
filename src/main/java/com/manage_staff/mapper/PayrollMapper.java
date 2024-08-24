@@ -7,6 +7,7 @@ import com.manage_staff.entity.Payroll;
 import com.manage_staff.entity.Position;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 import java.util.ArrayList;
@@ -19,5 +20,7 @@ public interface PayrollMapper {
 
     @Mapping(target = "positions",ignore = true)
     PayrollResponse toPayrollResponse (Payroll payroll);
+
+    void updatePayroll(@MappingTarget Payroll payroll, PayrollRequest request);
 
 }

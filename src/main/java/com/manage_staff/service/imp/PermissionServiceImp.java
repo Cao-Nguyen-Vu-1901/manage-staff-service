@@ -60,6 +60,13 @@ public class PermissionServiceImp implements IPermissionService {
     }
 
     @Override
+    public PermissionResponse update(String id, PermissionRequest request) {
+        Permission permission = permissionRepository.findById(id).orElseThrow( ()-> new AppException(ErrorCode.PERMISSION_NOT_EXISTED));
+        permissionMapper.updatePermission(permission,request);
+        return permissionMapper.toPermissionResponse(permissionRepository.save(permission));
+    }
+
+    @Override
     public void deleteById(String id) {
         permissionRepository.deleteById(id);
     }

@@ -33,7 +33,7 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public ApiResponse<DepartmentResponse> save(@Valid @RequestBody DepartmentRequest request){
+    public ApiResponse<DepartmentResponse> create(@Valid @RequestBody DepartmentRequest request){
         return ApiResponse.<DepartmentResponse>builder()
                 .result(departmentService.save(request)).build();
     }
@@ -42,6 +42,13 @@ public class DepartmentController {
     public ApiResponse<String> deleteById(@PathVariable String id){
         departmentService.deleteById(id);
         return ApiResponse.<String>builder().result("Department has been delete").build();
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<DepartmentResponse> update(@PathVariable String id, @RequestBody DepartmentRequest request){
+        return ApiResponse.<DepartmentResponse>builder()
+                .code(1000)
+                .result(departmentService.update(id, request)).build();
     }
 
 

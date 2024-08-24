@@ -42,4 +42,11 @@ public class RewardDisciplineController {
         rewardDisciplineService.deleteById(id);
         return ApiResponse.<String>builder().result("Reward discipline has been delete").build();
     }
+
+    @PutMapping("/{id}")
+    public ApiResponse<RewardDisciplineResponse> update( @PathVariable String id,
+                                                        @Valid @RequestBody RewardDisciplineRequest request){
+        return ApiResponse.<RewardDisciplineResponse>builder()
+                .code(1000).result(rewardDisciplineService.update(id, request)).build();
+    }
 }

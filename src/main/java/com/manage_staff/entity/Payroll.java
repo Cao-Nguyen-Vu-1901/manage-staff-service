@@ -30,7 +30,7 @@ public class Payroll implements Serializable {
     BigDecimal basicSalary;
 
     @JsonManagedReference(value = "payroll_position")
-    @OneToMany(mappedBy = "payroll", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "payroll", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<Position> positions = new ArrayList<>();
 
 }

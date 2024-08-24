@@ -1,6 +1,7 @@
 package com.manage_staff.service.imp;
 
 import com.manage_staff.dto.request.RoleRequest;
+import com.manage_staff.dto.request.RoleUpdateRequest;
 import com.manage_staff.dto.response.RoleResponse;
 import com.manage_staff.entity.Role;
 import com.manage_staff.exception.AppException;
@@ -70,6 +71,17 @@ public class RoleServiceImp implements IRoleService {
             role.setPermissions(new HashSet<>(permission));
             return roleMapper.toRoleResponse(roleRepository.save(role));
         }
+    }
+
+    @Override
+    public RoleResponse update(String id, RoleUpdateRequest request) {
+        Role role = roleRepository.findById(id).orElseThrow( () -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
+        if(request.getPermissions() != null){
+            var permissions = permissionRepository.findAllById(request.getPermissions());
+            role.setPermissions(new HashSet<>(permissions));
+        }
+        roleMapper.updateRole(role,request);
+        return roleMapper.toRoleResponse(roleRepository.save(role));
     }
 
     @Override
