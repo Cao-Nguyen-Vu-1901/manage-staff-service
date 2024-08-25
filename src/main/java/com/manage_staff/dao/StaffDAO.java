@@ -46,15 +46,20 @@ public class StaffDAO {
                     }
                 }
                 query.where(predicate);
-                if (sortBy != null) {
-                    if ("DESC".equalsIgnoreCase(orderBy)) {
-                        query.orderBy(builder.desc(root.get(sortBy)));
-                    } else {
-                        query.orderBy(builder.asc(root.get(sortBy)));
-                    }
-                }
+
             }
 
+            Pageable pageable = null;
+
+            if(sortBy != null){
+                if ("DESC".equalsIgnoreCase(orderBy)) {
+                    query.orderBy(builder.desc(root.get(sortBy)));
+                }
+                pageable = PageRequest.of(offsetP / limitP, limitP,
+                        "DESC".equalsIgnoreCase(orderBy) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending());
+            }else {
+                pageable = PageRequest.of(offsetP / limitP, limitP);
+            }
             Query<Staff> q = session.createQuery(query);
             long totalRecords = q.getResultList().size();
 
@@ -66,14 +71,7 @@ public class StaffDAO {
 
 
             // Tạo đối tượng Page
-            Pageable pageable = null;
 
-            if(sortBy != null){
-                pageable = PageRequest.of(offsetP / limitP, limitP,
-                        "DESC".equalsIgnoreCase(orderBy) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending());
-            }else {
-                pageable = PageRequest.of(offsetP / limitP, limitP);
-            }
             return new PageImpl<>(staff, pageable, totalRecords);
         }
 

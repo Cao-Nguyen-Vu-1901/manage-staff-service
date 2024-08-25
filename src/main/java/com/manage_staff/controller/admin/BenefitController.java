@@ -3,12 +3,15 @@ package com.manage_staff.controller.admin;
 import com.manage_staff.dto.request.BenefitRequest;
 import com.manage_staff.dto.response.ApiResponse;
 import com.manage_staff.dto.response.BenefitResponse;
+import com.manage_staff.dto.response.PagingResponse;
+import com.manage_staff.dto.response.StaffResponse;
 import com.manage_staff.service.IBenefitService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +25,17 @@ public class BenefitController {
     IBenefitService benefitService;
 
     @GetMapping
-    public ApiResponse<List<BenefitResponse>> getAllBenefits(){
-        return ApiResponse.<List<BenefitResponse>>builder()
-                .result(benefitService.findAll()).build();
+    public PagingResponse<List<BenefitResponse>> getAllBenefits(@RequestParam(defaultValue = "1") int currentPage,
+                                                                @RequestParam(defaultValue = "9") int pageSize,
+                                                                String type, String value, String sortBy, String orderBy){
+        Page<BenefitResponse> benefitResponsePage = benefitService.paging(type,value, currentPage,pageSize,orderBy,sortBy);
+
+        return PagingResponse.<List<BenefitResponse>>builder()
+                .code(1000).currentPage(currentPage + 1).pageSize(pageSize).sortBy(sortBy)
+                .totalPage(benefitResponsePage.getTotalPages()).totalItem(benefitResponsePage.getTotalElements())
+                .orderBy(orderBy)
+                .type(type).value(value).result(benefitResponsePage.getContent())
+                .build();
     }
 
     @GetMapping("/{id}")

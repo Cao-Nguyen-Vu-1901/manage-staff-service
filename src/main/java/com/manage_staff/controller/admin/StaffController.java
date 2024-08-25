@@ -27,14 +27,8 @@ import java.util.stream.Collectors;
 public class StaffController {
 
     IStaffService staffService;
-     
-    @GetMapping
-    public ApiResponse<List<StaffResponse>> findAll(){
-        return ApiResponse.<List<StaffResponse>>builder()
-                .code(1000).result(
-                        staffService.findAll()
-                ).build();
-    }
+
+
     @GetMapping("/{id}")
     public ApiResponse<StaffResponse> findById(@PathVariable String id){
         return ApiResponse.<StaffResponse>builder()
@@ -43,7 +37,7 @@ public class StaffController {
                 ).build();
     }
 
-    @GetMapping("/view")
+    @GetMapping
     public PagingResponse<List<StaffResponse>> paging(@RequestParam(defaultValue = "1") int currentPage,
                                                       @RequestParam(defaultValue = "9") int pageSize,
                                                       String type, String value, String sortBy, String orderBy){
