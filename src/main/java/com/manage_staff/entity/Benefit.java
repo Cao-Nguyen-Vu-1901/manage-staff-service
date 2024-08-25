@@ -20,6 +20,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "benefits")
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
 public class Benefit implements Serializable {
     @Id
@@ -32,6 +33,7 @@ public class Benefit implements Serializable {
 
     String content;
 
+    @Column(name = "effective_date")
     LocalDate effectiveDate;
 
 }

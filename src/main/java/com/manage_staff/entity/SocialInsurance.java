@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "social_insurances")
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
 public class SocialInsurance implements Serializable {
 
@@ -24,15 +25,19 @@ public class SocialInsurance implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @Column(name = "begin_day")
     LocalDate beginDay;
 
+    @Column(name = "expiry_date")
     LocalDate expiryDate;
 
+    @Column(name = "registration_area")
     String registrationArea;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},fetch = FetchType.EAGER)
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     Staff staff;
 
+    @Column(name = "social_insurance_id")
     String socialInsuranceId;
 }

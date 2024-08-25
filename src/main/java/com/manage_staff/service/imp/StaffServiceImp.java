@@ -1,32 +1,40 @@
 package com.manage_staff.service.imp;
 
+import com.manage_staff.dao.StaffDAO;
 import com.manage_staff.dto.request.StaffRequest;
 import com.manage_staff.dto.request.StaffUpdateRequest;
 import com.manage_staff.dto.response.StaffResponse;
 import com.manage_staff.entity.Staff;
 import com.manage_staff.exception.AppException;
 import com.manage_staff.exception.ErrorCode;
+import com.manage_staff.hibernate.HibernateUtil;
 import com.manage_staff.mapper.PositionMapper;
 import com.manage_staff.mapper.StaffMapper;
 import com.manage_staff.repository.*;
 import com.manage_staff.service.IStaffService;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StaffServiceImp implements IStaffService {
 
     StaffRepository staffRepository;
@@ -37,7 +45,9 @@ public class StaffServiceImp implements IStaffService {
     LeaveDayRepository leaveDayRepository;
     BenefitRepository benefitRepository;
     RoleRepository roleRepository;
-    private final PositionMapper positionMapper;
+    PositionMapper positionMapper;
+
+    StaffDAO staffDAO;
 
     @Override
     public List<StaffResponse> findAll() {
@@ -62,13 +72,13 @@ public class StaffServiceImp implements IStaffService {
     public StaffResponse findById(String id) {
         return staffMapper.toStaffResponse(
                 staffRepository.findById(id)
-                        .orElseThrow( () -> new AppException(ErrorCode.STAFF_NOT_EXISTED)));
+                        .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_EXISTED)));
     }
 
     @Override
     public StaffResponse save(StaffRequest request) {
 
-        if(staffRepository.findByUsername(request.getUsername()) != null){
+        if (staffRepository.findByUsername(request.getUsername()) != null) {
             throw new AppException(ErrorCode.STAFF_EXISTED);
         }
 
@@ -82,8 +92,8 @@ public class StaffServiceImp implements IStaffService {
     @Override
     public StaffResponse update(String id, StaffUpdateRequest request) {
         Staff staff = staffRepository.findById(id)
-                .orElseThrow( () -> new AppException(ErrorCode.STAFF_NOT_EXISTED));
-        staffMapper.updateStaff(staff,request);
+                .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_EXISTED));
+        staffMapper.updateStaff(staff, request);
 //        var roles = roleRepository.findAllById(request.getRoles());
 //        staff.setRoles(new HashSet<>(roles));
         setStaffRequestUpdateMapperIgnore(staff, request);
@@ -108,12 +118,12 @@ public class StaffServiceImp implements IStaffService {
     @Override
     public Page<StaffResponse> findAllPaging(int currentPage, int pageSize, String sortBy, String orderBy) {
         Pageable pageable = null;
-        if(sortBy != null){
+        if (sortBy != null) {
             pageable = PageRequest.of(currentPage - 1, pageSize,
-                    Sort.by( orderBy != null && orderBy.equals("DESC")
+                    Sort.by(orderBy != null && orderBy.equals("DESC")
                             ? Sort.Direction.DESC
                             : Sort.Direction.ASC, sortBy));
-        }else{
+        } else {
             pageable = PageRequest.of(currentPage - 1, pageSize);
 
         }
@@ -122,101 +132,87 @@ public class StaffServiceImp implements IStaffService {
 
     @Override
     public Page<StaffResponse> findAllByDobPaging(int currentPage, int pageSize, String type, String value, String sortBy, String orderBy) {
-        Pageable pageable = null;
-        Page<StaffResponse> staffResponses ;
-        if(sortBy != null){
-            pageable = PageRequest.of(currentPage - 1, pageSize,
-                    Sort.by( orderBy != null && orderBy.equals("DESC")
-                            ? Sort.Direction.DESC
-                            : Sort.Direction.ASC, sortBy));
-        }else{
-            pageable = PageRequest.of(currentPage - 1, pageSize);
-        }
-        if(type != null){
-             staffResponses = switch (type) {
-                 case "" -> staffRepository.findAllByNameLike( pageable, "%" + value + "%")
-                         .map(positionMapper::staffToStaffResponse);
-                 default -> null;
-             };
 
-        }else{
-
-        }
-        return null;
+        return staffDAO.paging(type, value, pageSize, currentPage, sortBy, orderBy).map(positionMapper::staffToStaffResponse);
     }
 
 
-    public void setStaffRequestMapperIgnore(Staff staff, StaffRequest request){
-        if(request.getCertifications() != null){
+
+
+
+
+    public void setStaffRequestMapperIgnore(Staff staff, StaffRequest request) {
+        if (request.getCertifications() != null) {
             var certificationIds = request.getCertifications();
             var certifications = certificationRepository.findAllById(certificationIds);
             staff.setCertifications(certifications);
         }
 
-        if(request.getSocialInsurance() != null){
+        if (request.getSocialInsurance() != null) {
             var socialInsuranceId = request.getSocialInsurance();
             var socialInsurance = socialInsuranceRepository.findById(socialInsuranceId)
-                    .orElseThrow( () -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
+                    .orElseThrow(() -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
             staff.setSocialInsurance(socialInsurance);
         }
 
-        if(request.getRewardDisciplines() != null){
+        if (request.getRewardDisciplines() != null) {
             var rewardDisciplineIds = request.getRewardDisciplines();
             var rewardDisciplines = rewardDisciplineRepository.findAllById(rewardDisciplineIds);
             staff.setRewardDisciplines(rewardDisciplines);
         }
 
-        if(request.getLeaves() != null){
+        if (request.getLeaves() != null) {
             var leaveDayIds = request.getLeaves();
             var leaveDays = leaveDayRepository.findAllById(leaveDayIds);
             staff.setLeaves(leaveDays);
         }
 
-        if(request.getBenefits() != null){
+        if (request.getBenefits() != null) {
             var benefitIds = request.getBenefits();
             var benefits = benefitRepository.findAllById(benefitIds);
             staff.setBenefits(benefits);
         }
 
-        if(request.getRoles() != null){
+        if (request.getRoles() != null) {
             var roleIds = request.getRoles();
             var roles = roleRepository.findAllById(roleIds);
             staff.setRoles(new HashSet<>(roles));
         }
     }
-    public void setStaffRequestUpdateMapperIgnore(Staff staff, StaffUpdateRequest request){
-        if(request.getCertifications() != null){
+
+    public void setStaffRequestUpdateMapperIgnore(Staff staff, StaffUpdateRequest request) {
+        if (request.getCertifications() != null) {
             var certificationIds = request.getCertifications();
             var certifications = certificationRepository.findAllById(certificationIds);
             staff.setCertifications(certifications);
         }
 
-        if(request.getSocialInsurance() != null){
+        if (request.getSocialInsurance() != null) {
             var socialInsuranceId = request.getSocialInsurance();
             var socialInsurance = socialInsuranceRepository.findById(socialInsuranceId)
-                    .orElseThrow( () -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
+                    .orElseThrow(() -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
             staff.setSocialInsurance(socialInsurance);
         }
 
-        if(request.getRewardDisciplines() != null){
+        if (request.getRewardDisciplines() != null) {
             var rewardDisciplineIds = request.getRewardDisciplines();
             var rewardDisciplines = rewardDisciplineRepository.findAllById(rewardDisciplineIds);
             staff.setRewardDisciplines(rewardDisciplines);
         }
 
-        if(request.getLeaves() != null){
+        if (request.getLeaves() != null) {
             var leaveDayIds = request.getLeaves();
             var leaveDays = leaveDayRepository.findAllById(leaveDayIds);
             staff.setLeaves(leaveDays);
         }
 
-        if(request.getBenefits() != null){
+        if (request.getBenefits() != null) {
             var benefitIds = request.getBenefits();
             var benefits = benefitRepository.findAllById(benefitIds);
             staff.setBenefits(benefits);
         }
 
-        if(request.getRoles() != null){
+        if (request.getRoles() != null) {
             var roleIds = request.getRoles();
             var roles = roleRepository.findAllById(roleIds);
             staff.setRoles(new HashSet<>(roles));

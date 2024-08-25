@@ -19,6 +19,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "payrolls")
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
 public class Payroll implements Serializable {
     @Id
@@ -27,6 +28,7 @@ public class Payroll implements Serializable {
 
     int coefficient; // hệ số
 
+    @Column(name = "basic_salary")
     BigDecimal basicSalary;
 
     @JsonManagedReference(value = "payroll_position")

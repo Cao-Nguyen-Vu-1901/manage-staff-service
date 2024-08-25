@@ -15,8 +15,11 @@ public class PagingResponse<T> {
     int code;
     int currentPage;
     int pageSize;
-    T result;
     String type;
     String value;
     String sortBy;
+    String orderBy;
+    long totalItem;
+    int totalPage;
+    T result;
 }

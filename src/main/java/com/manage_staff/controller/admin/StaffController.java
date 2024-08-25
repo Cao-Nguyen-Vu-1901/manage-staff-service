@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,9 +27,7 @@ import java.util.stream.Collectors;
 public class StaffController {
 
     IStaffService staffService;
-    private final PositionMapper positionMapper;
-
-
+     
     @GetMapping
     public ApiResponse<List<StaffResponse>> findAll(){
         return ApiResponse.<List<StaffResponse>>builder()
@@ -48,27 +47,14 @@ public class StaffController {
     public PagingResponse<List<StaffResponse>> paging(@RequestParam(defaultValue = "1") int currentPage,
                                                       @RequestParam(defaultValue = "9") int pageSize,
                                                       String type, String value, String sortBy, String orderBy){
-        List<StaffResponse> staff = null;
-        if(type != null && value != null){
-            staff = staffService
-                    .findAllByDobPaging(currentPage, pageSize, type, value, sortBy, orderBy)
-                    .getContent().stream()
-                    .map(positionMapper::staffToStaffResponse)
-                    .collect(Collectors.toList());
-        }else if(value != null){
-            staff = staffService.findAllByDobPaging(currentPage, pageSize, null, value, sortBy, orderBy)
-                    .getContent().stream()
-                    .map(positionMapper::staffToStaffResponse)
-                    .collect(Collectors.toList());
-        }else {
-            staff = staffService.findAllPaging(currentPage, pageSize, sortBy, orderBy)
-                    .getContent().stream()
-                    .map(positionMapper::staffToStaffResponse)
-                    .collect(Collectors.toList());
-        }
+        Page<StaffResponse> staff = staffService
+                    .findAllByDobPaging(currentPage, pageSize, type, value, sortBy, orderBy) ;
+
         return PagingResponse.<List<StaffResponse>>builder()
-                .code(1000).currentPage(currentPage).pageSize(pageSize).sortBy(sortBy)
-                .type(type).value(value).result(staff)
+                .code(1000).currentPage(currentPage + 1).pageSize(pageSize).sortBy(sortBy)
+                .totalPage(staff.getTotalPages()).totalItem(staff.getTotalElements())
+                .orderBy(orderBy)
+                .type(type).value(value).result(staff.getContent())
                 .build();
     }
 

@@ -33,10 +33,11 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
     Page<Staff> findAllByPromotionDate(Pageable pageable, LocalDate date);
     Page<Staff> findAllByCreateDate(Pageable pageable, LocalDate date);
 
-//    @Query("select st from Staff st where :column = : value order by :orderBy DESC LIMIT :limitP offset :offsetP")
-//    List<Staff> paging(@Param("column") String column,@Param("value,") String value,
-//                       @Param("limitP") int limitP,@Param("offsetP") int offsetP,
-//                       @Param("sortBy") String sortBy, @Param("orderBy") String orderBy);
+    @Query("SELECT st FROM Staff st WHERE st.name = :value ORDER BY st.id DESC")
+    List<Staff> findByName(@Param("value") String value, Pageable pageable);
+//    @Query("SELECT COUNT(s) FROM Staff s WHERE s.:columnName   like :valuep")
+//    List<Staff> findByName(@Param("valuep") String valuep, @Param("columnName") String columnName, Pageable pageable);
+
 
 
 

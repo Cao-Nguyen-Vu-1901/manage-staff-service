@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "certifications")
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
 public class Certification  implements Serializable {
     @Id
@@ -23,10 +24,13 @@ public class Certification  implements Serializable {
 
     String name;
 
+    @Column(name = "issue_date")
     LocalDate issueDate;
 
+    @Column(name = "issuing_authority")
     String issuingAuthority;
 
+    @Column(name = "expiry_date")
     LocalDate expiryDate;
 
 
