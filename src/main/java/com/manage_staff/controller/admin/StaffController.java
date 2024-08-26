@@ -45,7 +45,7 @@ public class StaffController {
                     .findAllByDobPaging(currentPage, pageSize, type, value, sortBy, orderBy) ;
 
         return PagingResponse.<List<StaffResponse>>builder()
-                .code(1000).currentPage(currentPage + 1).pageSize(pageSize).sortBy(sortBy)
+                .code(1000).currentPage(currentPage).pageSize(pageSize).sortBy(sortBy)
                 .totalPage(staff.getTotalPages()).totalItem(staff.getTotalElements())
                 .orderBy(orderBy)
                 .type(type).value(value).result(staff.getContent())

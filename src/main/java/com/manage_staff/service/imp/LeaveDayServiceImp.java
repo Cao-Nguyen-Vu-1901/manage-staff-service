@@ -1,5 +1,6 @@
 package com.manage_staff.service.imp;
 
+import com.manage_staff.dao.LeaveDayDAO;
 import com.manage_staff.dto.request.LeaveDayRequest;
 import com.manage_staff.dto.response.LeaveDayResponse;
 import com.manage_staff.entity.LeaveDay;
@@ -11,6 +12,7 @@ import com.manage_staff.service.ILeaveDayService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class LeaveDayServiceImp implements ILeaveDayService {
 
     LeaveDayRepository leaveDayRepository;
     LeaveDayMapper leaveDayMapper;
+    LeaveDayDAO leaveDayDAO;
 
     @Override
     public List<LeaveDayResponse> findAll() {
@@ -42,6 +45,12 @@ public class LeaveDayServiceImp implements ILeaveDayService {
         return leaveDayRepository.findAllByNameLike("%" + name + "%")
                 .stream().map(leaveDayMapper::toLeaveDayResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<LeaveDayResponse> paging(String column, String value, int currentPage, int pageSize, String orderBy, String sortBy) {
+        return leaveDayDAO.paging(column,value,currentPage,pageSize,orderBy,sortBy)
+                .map(leaveDayMapper::toLeaveDayResponse);
     }
 
     @Override

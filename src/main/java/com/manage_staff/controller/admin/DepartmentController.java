@@ -2,12 +2,15 @@ package com.manage_staff.controller.admin;
 
 import com.manage_staff.dto.request.DepartmentRequest;
 import com.manage_staff.dto.response.ApiResponse;
+import com.manage_staff.dto.response.CertificationResponse;
 import com.manage_staff.dto.response.DepartmentResponse;
+import com.manage_staff.dto.response.PagingResponse;
 import com.manage_staff.service.IDepartmentService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +24,18 @@ public class DepartmentController {
     IDepartmentService departmentService;
 
     @GetMapping
-    public ApiResponse<List<DepartmentResponse>> getAll(){
-        return ApiResponse.<List<DepartmentResponse>>builder().
-                    result(departmentService.findAll()).build();
+    public PagingResponse<List<DepartmentResponse>> getAll(@RequestParam(defaultValue = "1") int currentPage,
+                                                              @RequestParam(defaultValue = "9") int pageSize,
+                                                              String type, String value, String sortBy, String orderBy){
+        Page<DepartmentResponse> departmentResponses =
+                departmentService.paging(type,value, currentPage,pageSize,orderBy,sortBy);
+
+        return PagingResponse.<List<DepartmentResponse>>builder()
+                .code(1000).currentPage(currentPage).pageSize(pageSize).sortBy(sortBy)
+                .totalPage(departmentResponses.getTotalPages()).totalItem(departmentResponses.getTotalElements())
+                .orderBy(orderBy)
+                .type(type).value(value).result(departmentResponses.getContent())
+                .build();
     }
 
     @GetMapping("/{id}")

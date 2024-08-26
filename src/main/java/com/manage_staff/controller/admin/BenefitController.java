@@ -31,7 +31,7 @@ public class BenefitController {
         Page<BenefitResponse> benefitResponsePage = benefitService.paging(type,value, currentPage,pageSize,orderBy,sortBy);
 
         return PagingResponse.<List<BenefitResponse>>builder()
-                .code(1000).currentPage(currentPage + 1).pageSize(pageSize).sortBy(sortBy)
+                .code(1000).currentPage(currentPage ).pageSize(pageSize).sortBy(sortBy)
                 .totalPage(benefitResponsePage.getTotalPages()).totalItem(benefitResponsePage.getTotalElements())
                 .orderBy(orderBy)
                 .type(type).value(value).result(benefitResponsePage.getContent())

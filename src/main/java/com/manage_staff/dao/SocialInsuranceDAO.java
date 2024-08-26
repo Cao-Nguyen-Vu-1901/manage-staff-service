@@ -39,6 +39,7 @@ public class SocialInsuranceDAO {
                 }catch (Exception e){
                     predicate = builder.like(root.get(column).as(String.class), "%" + value + "%");
                 }
+                query.where(predicate);
             }
             if(orderBy != null){
                 if("DESC".equalsIgnoreCase(sortBy)){

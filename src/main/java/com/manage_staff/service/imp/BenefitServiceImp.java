@@ -63,7 +63,8 @@ public class BenefitServiceImp implements IBenefitService {
     }
 
     @Override
-    public Page<BenefitResponse> paging(String column, String value, int currentPage, int pageSize, String orderBy, String sortBy) {
+    public Page<BenefitResponse> paging(String column, String value, int currentPage,
+                                        int pageSize, String orderBy, String sortBy) {
         return benefitDAO.paging(column, value, currentPage, pageSize, orderBy, sortBy)
                 .map(benefitMapper::toBenefitResponse);
     }
