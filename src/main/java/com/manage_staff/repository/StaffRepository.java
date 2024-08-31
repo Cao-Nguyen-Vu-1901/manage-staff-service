@@ -16,11 +16,12 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, String> {
     List<Staff> findAllByNameLike(String name);
-    Staff findByUsername( String username);
+    Optional<Staff> findByUsername(String username);
 
     Page<Staff> findAllByNameLike(Pageable pageable ,String name);
     Page<Staff> findAllByDob(Pageable pageable, LocalDate dob);

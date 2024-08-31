@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -56,5 +58,13 @@ public class GlobalException {
                         .build());
     }
 
+    @ExceptionHandler(value = JwtException.class)
+    ResponseEntity<ApiResponse> handlingJwtException(JwtException exception){
+        ErrorCode errorCode = ErrorCode.UNAUTHENTICATED;
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.builder()
+                        .code(HttpStatus.UNAUTHORIZED.hashCode())
+                        .message(exception.getMessage()).build());
+    }
 
 }

@@ -78,7 +78,7 @@ public class StaffServiceImp implements IStaffService {
     @Override
     public StaffResponse save(StaffRequest request) {
 
-        if (staffRepository.findByUsername(request.getUsername()) != null) {
+        if (staffRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new AppException(ErrorCode.STAFF_EXISTED);
         }
 
