@@ -24,6 +24,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.data.domain.*;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -41,7 +44,7 @@ public class StaffServiceImp implements IStaffService {
     StaffMapper staffMapper;
     RoleRepository roleRepository;
     PositionMapper positionMapper;
-
+    PasswordEncoder passwordEncoder;
     StaffDAO staffDAO;
 
     @Override
@@ -63,6 +66,8 @@ public class StaffServiceImp implements IStaffService {
                 .collect(Collectors.toList());
     }
 
+
+    @PostAuthorize("returnObject.username == authentication.name")
     @Override
     public StaffResponse findById(String id) {
         return staffMapper.toStaffResponse(
@@ -84,7 +89,7 @@ public class StaffServiceImp implements IStaffService {
             var roles = roleRepository.findAllById(roleIds);
             staff.setRoles(new HashSet<>(roles));
         }
-
+        staff.setPassword(passwordEncoder.encode(request.getPassword()));
         return staffMapper.toStaffResponse(staffRepository.save(staff));
     }
 
