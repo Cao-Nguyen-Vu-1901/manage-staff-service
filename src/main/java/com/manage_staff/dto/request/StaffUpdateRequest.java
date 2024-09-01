@@ -33,8 +33,6 @@ public class StaffUpdateRequest {
             , message = "Phone number must be numbers")
     String phoneNumber;
 
-    MultipartFile image;
-
     String address;
 
     LocalDate promotionDate;

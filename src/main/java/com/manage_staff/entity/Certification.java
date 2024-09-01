@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "certifications")
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+
 public class Certification  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,6 +33,7 @@ public class Certification  implements Serializable {
     @Column(name = "expiry_date")
     LocalDate expiryDate;
 
+    String image;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "staff_id")

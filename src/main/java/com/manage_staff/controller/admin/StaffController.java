@@ -16,7 +16,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,9 +55,9 @@ public class StaffController {
     }
 
     @PostMapping
-    public ApiResponse<StaffResponse> save(@Valid @RequestBody StaffRequest request){
+    public ApiResponse<StaffResponse> save(@Valid StaffRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         return ApiResponse.<StaffResponse>builder()
-                .code(1000).result(staffService.save(request))
+                .code(1000).result(staffService.save(request, file))
                 .build();
     }
 
@@ -67,12 +69,13 @@ public class StaffController {
                 .build();
     }
 
-    @PutMapping("/{id}")
-    public ApiResponse<StaffResponse> delete (@PathVariable String id,
-                                              @Valid @RequestBody StaffUpdateRequest request){
+    @PutMapping
+    public ApiResponse<StaffResponse> update (String id,
+                                              @Valid StaffUpdateRequest request,
+                                              @RequestParam(value = "file", required = false) MultipartFile file){
 
         return ApiResponse.<StaffResponse>builder()
-                .code(1000).result(staffService.update(id, request))
+                .code(1000).result(staffService.update(id, request, file))
                 .build();
     }
 }

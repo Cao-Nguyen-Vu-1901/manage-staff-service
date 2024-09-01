@@ -21,8 +21,8 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "staff")
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
-public class Staff implements Serializable {
+
+public class Staff  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;

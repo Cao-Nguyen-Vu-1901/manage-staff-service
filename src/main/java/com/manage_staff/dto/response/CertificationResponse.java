@@ -22,6 +22,8 @@ public class CertificationResponse {
 
     String issuingAuthority;
 
+    String image;
+
     LocalDate expiryDate;
 
     StaffResponse staff;

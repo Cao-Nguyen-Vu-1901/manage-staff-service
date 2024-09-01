@@ -48,6 +48,7 @@ public enum ErrorCode {
     LOGIN_WAIT(1409, "You have entered the wrong password more than 3 times. Please wait for 20 seconds", HttpStatus.BAD_REQUEST) ,
     ACCOUNT_IS_LOCKED(1400, "Your account has been locked", HttpStatus.BAD_REQUEST) ,
 
+    IMAGE_NOT_FOUND(1404, "Image not found", HttpStatus.NOT_FOUND);
 
     ;
 

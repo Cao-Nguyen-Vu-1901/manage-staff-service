@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "social_insurances")
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+
 public class SocialInsurance implements Serializable {
 
     @Id

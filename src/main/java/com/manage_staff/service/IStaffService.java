@@ -8,7 +8,9 @@ import com.manage_staff.dto.response.StaffResponse;
 import com.manage_staff.entity.Staff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,9 +23,9 @@ public interface IStaffService {
 
     StaffResponse findById(String id);
 
-    StaffResponse save(StaffRequest request);
+    StaffResponse save(StaffRequest request, MultipartFile file) throws IOException;
 
-    StaffResponse update(String id, StaffUpdateRequest request);
+    StaffResponse update(String id, StaffUpdateRequest request, MultipartFile file);
 
     void deleteById(String id);
 

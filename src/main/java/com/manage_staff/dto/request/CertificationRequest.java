@@ -2,6 +2,7 @@ package com.manage_staff.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -21,5 +22,7 @@ public class CertificationRequest {
     LocalDate expiryDate;
 
     String staff;
+
+    String image;
 }
 

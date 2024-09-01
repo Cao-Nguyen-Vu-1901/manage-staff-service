@@ -31,10 +31,8 @@ public class StaffRequest {
     String email;
 
     @Pattern(regexp = "^\\d{10}$"
-            , message = "Phone number must be numbers")
+            , message = "Phone number must be number and at least 10 characters")
     String phoneNumber;
-
-    MultipartFile image;
 
     String address;
 
