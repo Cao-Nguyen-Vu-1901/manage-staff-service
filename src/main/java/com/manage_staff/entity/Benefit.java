@@ -20,7 +20,11 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "benefits")
+<<<<<<< HEAD
+=======
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class Benefit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,6 +36,7 @@ public class Benefit implements Serializable {
 
     String content;
 
+    @Column(name = "effective_date")
     LocalDate effectiveDate;
 
 }

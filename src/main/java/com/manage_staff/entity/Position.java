@@ -19,7 +19,11 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "positions")
+<<<<<<< HEAD
+=======
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class Position  implements Serializable {
 
     @Id
@@ -28,18 +32,16 @@ public class Position  implements Serializable {
 
     String name;
 
-    LocalDate promotionDate;
-
     @JsonBackReference(value = "payroll_position")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn( name = "payroll_id")
     Payroll payroll;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     List<Staff> staff = new ArrayList<>();
 
     @JsonBackReference(value = "department_position")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn( name = "department_id")
     Department department;
 

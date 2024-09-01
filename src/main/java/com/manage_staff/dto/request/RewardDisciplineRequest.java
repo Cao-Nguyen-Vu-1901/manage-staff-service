@@ -31,6 +31,9 @@ public class RewardDisciplineRequest {
     @DayConstraint
     LocalDate expiryDate;
 
+<<<<<<< HEAD
     @NotNull
     String creatorId;
+=======
+>>>>>>> crud/admin
 }

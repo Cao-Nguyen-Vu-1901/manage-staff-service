@@ -17,16 +17,21 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "roles")
+<<<<<<< HEAD
+=======
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-
     String name;
 
-    @ManyToMany
+    String description;
+
+    @ManyToMany(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    , fetch = FetchType.EAGER)
     Set<Permission> permissions = new HashSet<>();
 
 }

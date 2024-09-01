@@ -1,5 +1,6 @@
 package com.manage_staff.service.imp;
 
+import com.manage_staff.dao.LeaveDayDAO;
 import com.manage_staff.dto.request.LeaveDayRequest;
 import com.manage_staff.dto.response.LeaveDayResponse;
 import com.manage_staff.entity.LeaveDay;
@@ -11,6 +12,7 @@ import com.manage_staff.service.ILeaveDayService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,10 +25,17 @@ public class LeaveDayServiceImp implements ILeaveDayService {
 
     LeaveDayRepository leaveDayRepository;
     LeaveDayMapper leaveDayMapper;
+    LeaveDayDAO leaveDayDAO;
 
     @Override
     public List<LeaveDayResponse> findAll() {
         return leaveDayRepository.findAll()
+                .stream().map(leaveDayMapper::toLeaveDayResponse)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<LeaveDayResponse> findAllById(List<String> ids) {
+        return leaveDayRepository.findAllById(ids)
                 .stream().map(leaveDayMapper::toLeaveDayResponse)
                 .collect(Collectors.toList());
     }
@@ -39,6 +48,12 @@ public class LeaveDayServiceImp implements ILeaveDayService {
     }
 
     @Override
+    public Page<LeaveDayResponse> paging(String column, String value, int currentPage, int pageSize, String orderBy, String sortBy) {
+        return leaveDayDAO.paging(column,value,currentPage,pageSize,orderBy,sortBy)
+                .map(leaveDayMapper::toLeaveDayResponse);
+    }
+
+    @Override
     public LeaveDayResponse findById(String id) {
         return leaveDayMapper.toLeaveDayResponse(leaveDayRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.LEAVE_DAY_NOT_EXISTED)));
@@ -48,6 +63,15 @@ public class LeaveDayServiceImp implements ILeaveDayService {
     public LeaveDayResponse save(LeaveDayRequest request) {
         LeaveDay leaveDay = leaveDayMapper.toLeaveDay(request);
         return leaveDayMapper.toLeaveDayResponse(leaveDayRepository.save(leaveDay));
+    }
+
+    @Override
+    public LeaveDayResponse update(String id, LeaveDayRequest request) {
+        LeaveDay leaveDay = leaveDayRepository.findById(id)
+                .orElseThrow( ()-> new AppException(ErrorCode.LEAVE_DAY_NOT_EXISTED));
+        leaveDayMapper.updateLeaveDay(leaveDay,request);
+        return leaveDayMapper
+                .toLeaveDayResponse(leaveDayRepository.save(leaveDay));
     }
 
     @Override

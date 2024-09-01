@@ -32,6 +32,12 @@ public class PermissionServiceImp implements IPermissionService {
     }
 
     @Override
+    public List<PermissionResponse> findAllById(List<String> ids) {
+        return permissionRepository.findAllById(ids)
+                .stream().map(permissionMapper::toPermissionResponse).collect(Collectors.toList());
+    }
+
+    @Override
     public List<PermissionResponse> findAllByNameLike(String name) {
         return permissionRepository.findAllByNameLike("%" + name + "%")
                 .stream().map(permissionMapper::toPermissionResponse)
@@ -46,7 +52,17 @@ public class PermissionServiceImp implements IPermissionService {
 
     @Override
     public PermissionResponse save(PermissionRequest request) {
+        if(!permissionRepository.findAllByName(request.getName()).isEmpty()){
+            throw new AppException(ErrorCode.PERMISSION_EXISTED);
+        }
         Permission permission = permissionMapper.toPermission(request);
+        return permissionMapper.toPermissionResponse(permissionRepository.save(permission));
+    }
+
+    @Override
+    public PermissionResponse update(String id, PermissionRequest request) {
+        Permission permission = permissionRepository.findById(id).orElseThrow( ()-> new AppException(ErrorCode.PERMISSION_NOT_EXISTED));
+        permissionMapper.updatePermission(permission,request);
         return permissionMapper.toPermissionResponse(permissionRepository.save(permission));
     }
 

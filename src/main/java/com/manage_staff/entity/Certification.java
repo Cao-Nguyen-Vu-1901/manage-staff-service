@@ -15,7 +15,11 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "certifications")
+<<<<<<< HEAD
+=======
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class Certification  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -23,12 +27,16 @@ public class Certification  implements Serializable {
 
     String name;
 
+    @Column(name = "issue_date")
     LocalDate issueDate;
 
+    @Column(name = "issuing_authority")
     String issuingAuthority;
 
+    @Column(name = "expiry_date")
     LocalDate expiryDate;
 
+    String image;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "staff_id")

@@ -1,6 +1,7 @@
 package com.manage_staff.dto.response;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BenefitResponse {
     String id;
 

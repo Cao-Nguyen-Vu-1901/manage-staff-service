@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -30,6 +31,8 @@ public class CertificationRequest {
     @DayConstraint
     LocalDate expiryDate;
 
-    StaffRequest staff;
+    String staff;
+
+    String image;
 }
 

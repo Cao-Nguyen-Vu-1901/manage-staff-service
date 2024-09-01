@@ -18,7 +18,11 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "reward_disciplines")
+<<<<<<< HEAD
+=======
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class RewardDiscipline implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,9 +33,12 @@ public class RewardDiscipline implements Serializable {
     @Column(columnDefinition = "TEXT")
     String content;
 
+    @Column(name = "begin_date")
     LocalDate beginDate;
 
+    @Column(name = "expiry_date")
     LocalDate expiryDate;
 
+    @Column(name = "creator_id")
     String creatorId;
 }
