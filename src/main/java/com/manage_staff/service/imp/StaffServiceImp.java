@@ -1,8 +1,10 @@
 package com.manage_staff.service.imp;
 
+import com.manage_staff.constant.StringConstant;
 import com.manage_staff.dto.request.StaffRequest;
 import com.manage_staff.dto.request.StaffUpdateRequest;
 import com.manage_staff.dto.response.StaffResponse;
+import com.manage_staff.entity.Role;
 import com.manage_staff.entity.Staff;
 import com.manage_staff.exception.AppException;
 import com.manage_staff.exception.ErrorCode;
@@ -10,6 +12,7 @@ import com.manage_staff.mapper.PositionMapper;
 import com.manage_staff.mapper.StaffMapper;
 import com.manage_staff.repository.*;
 import com.manage_staff.service.IStaffService;
+import com.manage_staff.util.ProcessImage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,7 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -30,11 +35,6 @@ public class StaffServiceImp implements IStaffService {
 
     StaffRepository staffRepository;
     StaffMapper staffMapper;
-    CertificationRepository certificationRepository;
-    SocialInsuranceRepository socialInsuranceRepository;
-    RewardDisciplineRepository rewardDisciplineRepository;
-    LeaveDayRepository leaveDayRepository;
-    BenefitRepository benefitRepository;
     RoleRepository roleRepository;
     private final PositionMapper positionMapper;
 
@@ -65,7 +65,7 @@ public class StaffServiceImp implements IStaffService {
     }
 
     @Override
-    public StaffResponse save(StaffRequest request) {
+    public StaffResponse save(StaffRequest request, MultipartFile file) throws IOException {
 
         if(staffRepository.findByUsername(request.getUsername()) != null){
             throw new AppException(ErrorCode.STAFF_EXISTED);
@@ -73,19 +73,42 @@ public class StaffServiceImp implements IStaffService {
 
         Staff staff = staffMapper.toStaff(request);
 
-        setStaffRequestMapperIgnore(staff, request);
 
+        if(file == null){
+            throw new AppException(ErrorCode.IMAGE_NOT_FOUND);
+        }
+        String imageName = ProcessImage.upload(file, "staff/");
+        staff.setImage(imageName);
+        staff.setStatus(true);
+        staff.setAccountVerified(false);
+        staff.setFailedLoginAttempts(0);
+        staff.setCreateDate(LocalDate.now());
+        var roles = new HashSet<Role>();
+        roles.add(roleRepository.findById(StringConstant.ROLE_USER)
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED)));
+        staff.setRoles(roles);
         return staffMapper.toStaffResponse(staffRepository.save(staff));
     }
 
     @Override
-    public StaffResponse update(String id, StaffUpdateRequest request) {
+    public StaffResponse update(String id, StaffUpdateRequest request, MultipartFile file) {
         Staff staff = staffRepository.findById(id)
                 .orElseThrow( () -> new AppException(ErrorCode.STAFF_NOT_EXISTED));
         staffMapper.updateStaff(staff,request);
-//        var roles = roleRepository.findAllById(request.getRoles());
-//        staff.setRoles(new HashSet<>(roles));
-        setStaffRequestUpdateMapperIgnore(staff, request);
+        if(request.getRoles() != null){
+            var roleIds = request.getRoles();
+            var roles = roleRepository.findAllById(roleIds);
+            staff.setRoles(new HashSet<>(roles));
+        }
+
+        try {
+            if(file != null){
+                String imageName = ProcessImage.upload(file, "staff/");
+                staff.setImage(imageName);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return positionMapper.staffToStaffResponse(staffRepository.save(staff));
     }
 
@@ -102,84 +125,6 @@ public class StaffServiceImp implements IStaffService {
     @Override
     public void deleteAll() {
         staffRepository.deleteAll();
-    }
-
-
-    public void setStaffRequestMapperIgnore(Staff staff, StaffRequest request){
-        if(request.getCertifications() != null){
-            var certificationIds = request.getCertifications();
-            var certifications = certificationRepository.findAllById(certificationIds);
-            staff.setCertifications(certifications);
-        }
-
-        if(request.getSocialInsurance() != null){
-            var socialInsuranceId = request.getSocialInsurance();
-            var socialInsurance = socialInsuranceRepository.findById(socialInsuranceId)
-                    .orElseThrow( () -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
-            staff.setSocialInsurance(socialInsurance);
-        }
-
-        if(request.getRewardDisciplines() != null){
-            var rewardDisciplineIds = request.getRewardDisciplines();
-            var rewardDisciplines = rewardDisciplineRepository.findAllById(rewardDisciplineIds);
-            staff.setRewardDisciplines(rewardDisciplines);
-        }
-
-        if(request.getLeaves() != null){
-            var leaveDayIds = request.getLeaves();
-            var leaveDays = leaveDayRepository.findAllById(leaveDayIds);
-            staff.setLeaves(leaveDays);
-        }
-
-        if(request.getBenefits() != null){
-            var benefitIds = request.getBenefits();
-            var benefits = benefitRepository.findAllById(benefitIds);
-            staff.setBenefits(benefits);
-        }
-
-        if(request.getRoles() != null){
-            var roleIds = request.getRoles();
-            var roles = roleRepository.findAllById(roleIds);
-            staff.setRoles(new HashSet<>(roles));
-        }
-    }
-    public void setStaffRequestUpdateMapperIgnore(Staff staff, StaffUpdateRequest request){
-        if(request.getCertifications() != null){
-            var certificationIds = request.getCertifications();
-            var certifications = certificationRepository.findAllById(certificationIds);
-            staff.setCertifications(certifications);
-        }
-
-        if(request.getSocialInsurance() != null){
-            var socialInsuranceId = request.getSocialInsurance();
-            var socialInsurance = socialInsuranceRepository.findById(socialInsuranceId)
-                    .orElseThrow( () -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
-            staff.setSocialInsurance(socialInsurance);
-        }
-
-        if(request.getRewardDisciplines() != null){
-            var rewardDisciplineIds = request.getRewardDisciplines();
-            var rewardDisciplines = rewardDisciplineRepository.findAllById(rewardDisciplineIds);
-            staff.setRewardDisciplines(rewardDisciplines);
-        }
-
-        if(request.getLeaves() != null){
-            var leaveDayIds = request.getLeaves();
-            var leaveDays = leaveDayRepository.findAllById(leaveDayIds);
-            staff.setLeaves(leaveDays);
-        }
-
-        if(request.getBenefits() != null){
-            var benefitIds = request.getBenefits();
-            var benefits = benefitRepository.findAllById(benefitIds);
-            staff.setBenefits(benefits);
-        }
-
-        if(request.getRoles() != null){
-            var roleIds = request.getRoles();
-            var roles = roleRepository.findAllById(roleIds);
-            staff.setRoles(new HashSet<>(roles));
-        }
     }
 
 }

@@ -45,6 +45,7 @@ public enum ErrorCode {
 
     STAFF_HAVE_SOCIAL_INSURANCE(1401, "Staff have social insurance", HttpStatus.INTERNAL_SERVER_ERROR) ,
 
+    IMAGE_NOT_FOUND(1404, "Image not found", HttpStatus.NOT_FOUND);
 
     ;
 

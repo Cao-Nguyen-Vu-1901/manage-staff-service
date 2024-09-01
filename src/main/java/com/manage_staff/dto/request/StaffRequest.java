@@ -31,10 +31,8 @@ public class StaffRequest {
     String email;
 
     @Pattern(regexp = "^\\d{10}$"
-            , message = "Phone number must be numbers")
+            , message = "Phone number must be number and at least 10 characters")
     String phoneNumber;
-
-    MultipartFile image;
 
     String address;
 
@@ -51,16 +49,6 @@ public class StaffRequest {
     LocalDate createDate;
 
     LocalDate promotionDate;
-
-    List<String> certifications = new ArrayList<>();
-
-    String socialInsurance;
-
-    List<String> rewardDisciplines = new ArrayList<>();
-
-    List<String> leaves = new ArrayList<>();
-
-    List<String> benefits = new ArrayList<>();
 
     Set<String> roles = new HashSet<>();
 }
