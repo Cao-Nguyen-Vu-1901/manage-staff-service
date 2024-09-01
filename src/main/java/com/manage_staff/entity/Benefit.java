@@ -21,6 +21,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "benefits")
+
 public class Benefit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,6 +33,7 @@ public class Benefit implements Serializable {
 
     String content;
 
+    @Column(name = "effective_date")
     LocalDate effectiveDate;
 
 }

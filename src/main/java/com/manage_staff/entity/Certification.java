@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "certifications")
+
 public class Certification  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -23,10 +24,13 @@ public class Certification  implements Serializable {
 
     String name;
 
+    @Column(name = "issue_date")
     LocalDate issueDate;
 
+    @Column(name = "issuing_authority")
     String issuingAuthority;
 
+    @Column(name = "expiry_date")
     LocalDate expiryDate;
 
     String image;

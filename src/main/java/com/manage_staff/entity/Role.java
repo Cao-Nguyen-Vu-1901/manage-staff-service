@@ -18,6 +18,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "roles")
+
 public class Role implements Serializable {
 
     @Id
@@ -25,7 +26,9 @@ public class Role implements Serializable {
 
     String description;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    , fetch = FetchType.EAGER)
     Set<Permission> permissions = new HashSet<>();
 
 }

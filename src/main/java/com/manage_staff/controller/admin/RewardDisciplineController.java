@@ -2,14 +2,13 @@ package com.manage_staff.controller.admin;
 
 import com.manage_staff.dto.request.PositionRequest;
 import com.manage_staff.dto.request.RewardDisciplineRequest;
-import com.manage_staff.dto.response.ApiResponse;
-import com.manage_staff.dto.response.PositionResponse;
-import com.manage_staff.dto.response.RewardDisciplineResponse;
+import com.manage_staff.dto.response.*;
 import com.manage_staff.service.IRewardDisciplineService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +22,18 @@ public class RewardDisciplineController {
     IRewardDisciplineService rewardDisciplineService;
 
     @GetMapping
-    public ApiResponse<List<RewardDisciplineResponse>> getAll(){
-        return ApiResponse.<List<RewardDisciplineResponse>>builder().result(rewardDisciplineService.findAll()).build();
+    public PagingResponse<List<RewardDisciplineResponse>> getAll(@RequestParam(defaultValue = "1") int currentPage,
+                                                              @RequestParam(defaultValue = "9") int pageSize,
+                                                              String type, String value, String sortBy, String orderBy){
+        Page<RewardDisciplineResponse> rewardDisciplineResponses =
+                rewardDisciplineService.paging(type,value, currentPage,pageSize,orderBy,sortBy);
+
+        return PagingResponse.<List<RewardDisciplineResponse>>builder()
+                .code(1000).currentPage(currentPage).pageSize(pageSize).sortBy(sortBy)
+                .totalPage(rewardDisciplineResponses.getTotalPages()).totalItem(rewardDisciplineResponses.getTotalElements())
+                .orderBy(orderBy)
+                .type(type).value(value).result(rewardDisciplineResponses.getContent())
+                .build();
     }
 
     @GetMapping("/{id}")

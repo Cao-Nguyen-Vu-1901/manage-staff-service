@@ -2,12 +2,15 @@ package com.manage_staff.controller.admin;
 
 import com.manage_staff.dto.request.LeaveDayRequest;
 import com.manage_staff.dto.response.ApiResponse;
+import com.manage_staff.dto.response.CertificationResponse;
 import com.manage_staff.dto.response.LeaveDayResponse;
+import com.manage_staff.dto.response.PagingResponse;
 import com.manage_staff.service.ILeaveDayService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +24,18 @@ public class LeaveDayController {
     ILeaveDayService leaveDayService;
 
     @GetMapping
-    public ApiResponse<List<LeaveDayResponse>> getAll(){
-        return ApiResponse.<List<LeaveDayResponse>>builder()
-                .result(leaveDayService.findAll()).build();
+    public PagingResponse<List<LeaveDayResponse>> getAll(@RequestParam(defaultValue = "1") int currentPage,
+                                                              @RequestParam(defaultValue = "9") int pageSize,
+                                                              String type, String value, String sortBy, String orderBy){
+        Page<LeaveDayResponse> leaveDayResponses =
+                leaveDayService.paging(type,value, currentPage,pageSize,orderBy,sortBy);
+
+        return PagingResponse.<List<LeaveDayResponse>>builder()
+                .code(1000).currentPage(currentPage).pageSize(pageSize).sortBy(sortBy)
+                .totalPage(leaveDayResponses.getTotalPages()).totalItem(leaveDayResponses.getTotalElements())
+                .orderBy(orderBy)
+                .type(type).value(value).result(leaveDayResponses.getContent())
+                .build();
     }
 
     @GetMapping("/{id}")

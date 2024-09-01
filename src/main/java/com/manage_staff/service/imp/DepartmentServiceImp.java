@@ -1,5 +1,6 @@
 package com.manage_staff.service.imp;
 
+import com.manage_staff.dao.DepartmentDAO;
 import com.manage_staff.dto.request.DepartmentRequest;
 import com.manage_staff.dto.response.DepartmentResponse;
 import com.manage_staff.entity.Department;
@@ -12,6 +13,7 @@ import com.manage_staff.service.IDepartmentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class DepartmentServiceImp implements IDepartmentService {
 
     DepartmentRepository departmentRepository;
     DepartmentMapper departmentMapper;
-    PositionRepository positionRepository;
+    DepartmentDAO departmentDAO;
 
     @Override
     public List<DepartmentResponse> findAll() {
@@ -38,6 +40,12 @@ public class DepartmentServiceImp implements IDepartmentService {
         return departmentRepository.findAllByNameLike("%" + name + "%")
                 .stream().map(departmentMapper::toDepartmentResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<DepartmentResponse> paging(String column, String value, int currentPage, int pageSize, String orderBy, String sortBy) {
+        return departmentDAO.paging(column,value,currentPage,pageSize,orderBy,sortBy)
+                .map(departmentMapper::toDepartmentResponse);
     }
 
     @Override

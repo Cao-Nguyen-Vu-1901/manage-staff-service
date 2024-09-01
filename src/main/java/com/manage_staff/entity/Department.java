@@ -19,6 +19,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "departments")
+
 public class Department  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

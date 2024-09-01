@@ -16,6 +16,7 @@ import java.io.Serializable;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "permissions")
+
 public class Permission implements Serializable {
 
     @Id
