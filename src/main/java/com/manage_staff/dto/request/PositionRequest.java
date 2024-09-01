@@ -1,6 +1,8 @@
 package com.manage_staff.dto.request;
 
 import com.manage_staff.entity.Department;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,14 +17,12 @@ import java.util.List;
 @Data
 public class PositionRequest {
 
+    @NotNull
+            @Size(min = 1, message = "Name must be at least 1 character")
     String name;
 
-    LocalDate promotionDate;
+    String payroll;
 
-    PayrollRequest payroll;
-
-    List<StaffRequest> staff = new ArrayList<>();
-
-    Department department;
+    String department;
 
 }

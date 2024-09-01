@@ -9,10 +9,12 @@ import java.util.List;
 
 public interface IPermissionService {
     List<PermissionResponse> findAll();
+    List<PermissionResponse> findAllById( List<String> ids);
     List<PermissionResponse> findAllByNameLike(String name);
     PermissionResponse findById(String id);
 
     PermissionResponse save(PermissionRequest request);
+    PermissionResponse update(String id, PermissionRequest request);
 
     void deleteById(String id);
 
