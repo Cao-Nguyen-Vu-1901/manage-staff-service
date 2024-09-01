@@ -37,19 +37,7 @@ public class StaffUpdateRequest {
 
     String address;
 
-    String password;
-
     LocalDate promotionDate;
-
-    List<String> certifications = new ArrayList<>();
-
-    String socialInsurance;
-
-    List<String> rewardDisciplines = new ArrayList<>();
-
-    List<String> leaves = new ArrayList<>();
-
-    List<String> benefits = new ArrayList<>();
 
     Set<String> roles = new HashSet<>();
 }
