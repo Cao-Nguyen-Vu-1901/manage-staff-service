@@ -20,6 +20,10 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "positions")
+<<<<<<< HEAD
+=======
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class Position  implements Serializable {
 
     @Id

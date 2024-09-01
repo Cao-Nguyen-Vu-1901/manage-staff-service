@@ -21,11 +21,17 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "staff")
+<<<<<<< HEAD
 public class Staff  implements Serializable {
+=======
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+public class Staff implements Serializable {
+>>>>>>> feature/paging
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @Column(name = "name")
     String name;
 
     LocalDate dob;
@@ -34,6 +40,7 @@ public class Staff  implements Serializable {
 
     String email;
 
+    @Column(name = "phone_number")
     String phoneNumber;
 
     String address;
@@ -46,12 +53,16 @@ public class Staff  implements Serializable {
 
     String image;
 
+    @Column(name = "account_verified")
     boolean accountVerified;
 
+    @Column(name = "failed_login_attempts")
     int failedLoginAttempts;
 
+    @Column(name = "create_date")
     LocalDate createDate;
 
+    @Column(name = "promotion_date")
     LocalDate promotionDate;
 
     @OneToMany(mappedBy = "staff", fetch = FetchType.EAGER)
@@ -62,9 +73,17 @@ public class Staff  implements Serializable {
     SocialInsurance socialInsurance;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "staff_reward_disciplines",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "reward_disciplines_id"))
     List<RewardDiscipline> rewardDisciplines = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "staff_leaves",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "leaves_id"))
     List<LeaveDay> leaves = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

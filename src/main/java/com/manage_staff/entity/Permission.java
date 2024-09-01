@@ -16,6 +16,10 @@ import java.io.Serializable;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "permissions")
+<<<<<<< HEAD
+=======
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class Permission implements Serializable {
 
     @Id

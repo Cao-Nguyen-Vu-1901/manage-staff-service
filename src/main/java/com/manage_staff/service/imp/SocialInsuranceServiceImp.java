@@ -1,5 +1,6 @@
 package com.manage_staff.service.imp;
 
+import com.manage_staff.dao.SocialInsuranceDAO;
 import com.manage_staff.dto.request.SocialInsuranceRequest;
 import com.manage_staff.dto.request.SocialInsuranceUpdateRequest;
 import com.manage_staff.dto.response.SocialInsuranceResponse;
@@ -13,6 +14,7 @@ import com.manage_staff.service.ISocialInsuranceService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -28,7 +30,7 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
 
     SocialInsuranceMapper socialInsuranceMapper;
     StaffRepository staffRepository;
-
+    SocialInsuranceDAO socialInsuranceDAO;
 
     @Override
     public List<SocialInsuranceResponse> findAll() {
@@ -84,5 +86,12 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
     @Override
     public void deleteAll() {
         socialInsuranceRepository.deleteAll();
+    }
+
+    @Override
+    public Page<SocialInsuranceResponse> paging(String column, String value, int currentPage,
+                                                int pageSize, String orderBy, String sortBy) {
+        return socialInsuranceDAO.paging(column, value, currentPage, pageSize, orderBy, sortBy)
+                .map(socialInsuranceMapper::toSocialInsuranceResponse);
     }
 }

@@ -18,21 +18,29 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "social_insurances")
+<<<<<<< HEAD
+=======
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class SocialInsurance implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @Column(name = "begin_day")
     LocalDate beginDay;
 
+    @Column(name = "expiry_date")
     LocalDate expiryDate;
 
+    @Column(name = "registration_area")
     String registrationArea;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},fetch = FetchType.EAGER)
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     Staff staff;
 
+    @Column(name = "social_insurance_id")
     String socialInsuranceId;
 }

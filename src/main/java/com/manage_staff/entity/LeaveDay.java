@@ -17,6 +17,10 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "leave_days")
+<<<<<<< HEAD
+=======
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+>>>>>>> feature/paging
 public class LeaveDay implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,8 +28,10 @@ public class LeaveDay implements Serializable {
 
     String name;
 
+    @Column(name = "start_date")
     LocalDate startDate;
 
+    @Column(name = "end_date")
     LocalDate endDate;
 
     String regulation;

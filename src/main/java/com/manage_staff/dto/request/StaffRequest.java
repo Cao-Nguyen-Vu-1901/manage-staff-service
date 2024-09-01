@@ -40,14 +40,6 @@ public class StaffRequest {
 
     String password;
 
-    boolean status;
-
-    boolean accountVerified;
-
-    int failedLoginAttempts;
-
-    LocalDate createDate;
-
     LocalDate promotionDate;
 
     Set<String> roles = new HashSet<>();
