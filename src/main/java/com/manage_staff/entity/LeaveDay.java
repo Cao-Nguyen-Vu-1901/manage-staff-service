@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+@Table(name = "leave_days")
 public class LeaveDay implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

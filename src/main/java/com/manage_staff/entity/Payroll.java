@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+@Table(name = "payrolls")
 public class Payroll implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
