@@ -18,7 +18,7 @@ import java.util.List;
 public class PositionRequest {
 
     @NotNull
-            @Size(min = 1, message = "Name must be at least 1 character")
+    @Size(min = 1, message = "Name must be at least 1 character")
     String name;
 
     String payroll;

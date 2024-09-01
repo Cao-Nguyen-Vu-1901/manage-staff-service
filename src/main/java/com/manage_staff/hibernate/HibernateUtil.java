@@ -13,24 +13,6 @@ import java.util.Properties;
 
 public class HibernateUtil {
     private final static SessionFactory FACTORY;
-//
-//    @NonFinal
-//    @Value("${sql.url}")
-//    private String url ;
-//
-//    @NonFinal
-//    @Value("${sql.driver-class-name}")
-//    private String driver ;
-//
-//    @NonFinal
-//    @Value("${sql.username}")
-//    private String username  ;
-//
-//    @NonFinal
-//    @Value("${sql.password}")
-//    private String password ;
-//
-//
 
     static {
 

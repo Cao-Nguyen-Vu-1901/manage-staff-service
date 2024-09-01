@@ -1,12 +1,13 @@
 package com.manage_staff.dto.request;
 
 import com.manage_staff.entity.*;
-<<<<<<< HEAD
+
+import com.manage_staff.validator.DobConstraint;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-=======
+
 import jakarta.validation.constraints.Pattern;
->>>>>>> crud/admin
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,10 +27,10 @@ import java.util.Set;
 public class StaffRequest {
 
     @NotNull
-            @Size(min = 2, message = "Name must be at least 2 characters")
+    @Size(min = 2, message = "Name must be at least 2 characters")
     String name;
 
-
+    @DobConstraint(min = 18)
     LocalDate dob;
 
     String gender;

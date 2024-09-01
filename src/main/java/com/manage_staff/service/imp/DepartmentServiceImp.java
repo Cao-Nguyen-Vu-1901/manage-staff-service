@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +29,14 @@ public class DepartmentServiceImp implements IDepartmentService {
     DepartmentMapper departmentMapper;
     DepartmentDAO departmentDAO;
 
+
     @Override
     public List<DepartmentResponse> findAll() {
         return departmentRepository.findAll()
                 .stream().map(departmentMapper::toDepartmentResponse)
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public List<DepartmentResponse> findAllByNameLike(String name) {
@@ -55,12 +58,14 @@ public class DepartmentServiceImp implements IDepartmentService {
                 () -> new AppException((ErrorCode.DEPARTMENT_NOT_EXISTED))));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public DepartmentResponse save(DepartmentRequest request) {
         Department department = departmentMapper.toDepartment(request);
         return departmentMapper.toDepartmentResponse(departmentRepository.save(department));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public DepartmentResponse update(String id, DepartmentRequest request) {
 
@@ -72,16 +77,19 @@ public class DepartmentServiceImp implements IDepartmentService {
         return departmentMapper.toDepartmentResponse(departmentRepository.save(department));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteById(String id) {
         departmentRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAllById(List<String> ids) {
         departmentRepository.deleteAllById(ids);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAll() {
         departmentRepository.deleteAll();

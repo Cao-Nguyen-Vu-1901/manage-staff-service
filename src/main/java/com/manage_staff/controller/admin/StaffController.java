@@ -30,17 +30,7 @@ public class StaffController {
 
     IStaffService staffService;
 
-<<<<<<< HEAD
-    @GetMapping
-    public ApiResponse<List<StaffResponse>> findAll(){
-        return ApiResponse.<List<StaffResponse>>builder()
-                .code(1000).result(
-                        staffService.findAll()
-                ).build();
-    }
-=======
 
->>>>>>> crud/admin
     @GetMapping("/{id}")
     public ApiResponse<StaffResponse> findById(@PathVariable String id){
         return ApiResponse.<StaffResponse>builder()
@@ -49,14 +39,12 @@ public class StaffController {
                 ).build();
     }
 
-<<<<<<< HEAD
-=======
     @GetMapping
     public PagingResponse<List<StaffResponse>> paging(@RequestParam(defaultValue = "1") int currentPage,
                                                       @RequestParam(defaultValue = "9") int pageSize,
                                                       String type, String value, String sortBy, String orderBy){
         Page<StaffResponse> staff = staffService
-                    .findAllByDobPaging(currentPage, pageSize, type, value, sortBy, orderBy) ;
+                    .pagingStaff(currentPage, pageSize, type, value, sortBy, orderBy) ;
 
         return PagingResponse.<List<StaffResponse>>builder()
                 .code(1000).currentPage(currentPage).pageSize(pageSize).sortBy(sortBy)
@@ -90,5 +78,5 @@ public class StaffController {
                 .code(1000).result(staffService.update(id, request, file))
                 .build();
     }
->>>>>>> crud/admin
+
 }

@@ -18,10 +18,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "roles")
-<<<<<<< HEAD
-=======
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
->>>>>>> feature/paging
+
 public class Role implements Serializable {
 
     @Id

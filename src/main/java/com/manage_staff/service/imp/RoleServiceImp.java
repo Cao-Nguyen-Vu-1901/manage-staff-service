@@ -13,6 +13,7 @@ import com.manage_staff.service.IRoleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -84,16 +85,19 @@ public class RoleServiceImp implements IRoleService {
         return roleMapper.toRoleResponse(roleRepository.save(role));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteById(String id) {
         roleRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAllById(List<String> ids) {
         roleRepository.deleteAllById(ids);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAll() {
         roleRepository.deleteAll();

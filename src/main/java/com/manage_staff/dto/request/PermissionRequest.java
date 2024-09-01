@@ -19,11 +19,8 @@ import java.io.Serializable;
 @Data
 public class PermissionRequest  {
 
-<<<<<<< HEAD
     @NotNull
     @Size(min = 2, message = "Name must be at least 2 character")
-=======
->>>>>>> crud/admin
     String name;
     String description;
 

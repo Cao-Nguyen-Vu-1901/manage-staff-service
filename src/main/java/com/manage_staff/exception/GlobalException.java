@@ -18,7 +18,7 @@ import java.util.Objects;
 public class GlobalException {
 
     @ExceptionHandler(value = AppException.class)
-    ResponseEntity<ApiResponse> handlingAppException(AppException exception){
+    ResponseEntity<ApiResponse> handlingAppException(AppException exception) {
         ErrorCode errorCode = exception.getErrorCode();
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setMessage(errorCode.getMessage());
@@ -27,7 +27,7 @@ public class GlobalException {
     }
 
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
-    ResponseEntity<ApiResponse> handlingHttpMessageNotReadableException(HttpMessageNotReadableException exception){
+    ResponseEntity<ApiResponse> handlingHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ApiResponse.builder()
@@ -37,9 +37,9 @@ public class GlobalException {
     }
 
     @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
-    ResponseEntity<ApiResponse> handlingSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException exception){
-        ErrorCode errorCode  = ErrorCode.VALUE_INVALID;
-        if(exception.getMessage().contains("social_insurance")){
+    ResponseEntity<ApiResponse> handlingSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException exception) {
+        ErrorCode errorCode = ErrorCode.VALUE_INVALID;
+        if (exception.getMessage().contains("social_insurance")) {
             errorCode = ErrorCode.STAFF_HAVE_SOCIAL_INSURANCE;
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -49,7 +49,7 @@ public class GlobalException {
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception ){
+    ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.builder()
@@ -59,7 +59,7 @@ public class GlobalException {
     }
 
     @ExceptionHandler(value = JwtException.class)
-    ResponseEntity<ApiResponse> handlingJwtException(JwtException exception){
+    ResponseEntity<ApiResponse> handlingJwtException(JwtException exception) {
         ErrorCode errorCode = ErrorCode.UNAUTHENTICATED;
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ApiResponse.builder()

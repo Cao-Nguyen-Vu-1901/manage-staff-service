@@ -16,10 +16,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "certifications")
-<<<<<<< HEAD
-=======
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
->>>>>>> feature/paging
+
 public class Certification  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

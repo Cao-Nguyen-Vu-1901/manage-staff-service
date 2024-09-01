@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,16 +63,19 @@ public class PayrollServiceImp implements IPayrollService {
         return payrollMapper.toPayrollResponse(payrollRepository.save(payroll));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteById(String id) {
         payrollRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAllById(List<String> ids) {
         payrollRepository.deleteAllById(ids);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAll() {
         payrollRepository.deleteAll();

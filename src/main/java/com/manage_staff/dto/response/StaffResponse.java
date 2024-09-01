@@ -36,8 +36,6 @@ public class StaffResponse {
 
     String username;
 
-    String password;
-
     String image;
 
     boolean status;

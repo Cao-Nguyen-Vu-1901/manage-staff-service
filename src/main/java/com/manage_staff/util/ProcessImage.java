@@ -19,14 +19,14 @@ import java.util.UUID;
 @Slf4j
 public class ProcessImage {
     public static synchronized String upload(MultipartFile image, String folder) throws IOException {
-        if(!Objects.equals(image.getOriginalFilename(), "")){
+        if (!Objects.equals(image.getOriginalFilename(), "")) {
             FirebaseInitializer.getFirebaseApp();
             // Lấy đối tượng Storage từ Firebase
             Storage storage = StorageClient.getInstance().bucket().getStorage();
             String bucketName = StorageClient.getInstance().bucket().getName();
             // Đọc dữ liệu từ MultipartFile
 
-        byte[] data = image.getBytes();
+            byte[] data = image.getBytes();
 //            byte[] data = reduceSize(image, 600, 600);
 
             String contentType = image.getContentType();
@@ -36,7 +36,7 @@ public class ProcessImage {
             var imageName = image.getOriginalFilename();
             assert imageName != null;
             String fileName = UUID.randomUUID() +
-                   imageName.substring(imageName.lastIndexOf(".")) ;
+                    imageName.substring(imageName.lastIndexOf("."));
 
 
             // Tạo BlobInfo với tên, đường dẫn tệp và loại nội dung
@@ -48,14 +48,14 @@ public class ProcessImage {
 
 
             // Lấy liên kết tải xuống
-            return "https://firebasestorage.googleapis.com/v0/b/"+ blobInfo.getBucket()+"/o/"+ blob.getName().replace("/", "%2F")+"?alt=media";
-        }else {
+            return "https://firebasestorage.googleapis.com/v0/b/" + blobInfo.getBucket() + "/o/" + blob.getName().replace("/", "%2F") + "?alt=media";
+        } else {
             return null;
         }
     }
 
 
-    public static String saveImageInServer(MultipartFile image,Path resourcePath) throws IOException {
+    public static String saveImageInServer(MultipartFile image, Path resourcePath) throws IOException {
 
 
         // Tạo đường dẫn đến thư mục resource
@@ -63,7 +63,7 @@ public class ProcessImage {
 
 
         if (!Objects.equals(image.getOriginalFilename(), "")) {
-            String imgName = UUID.randomUUID()+image.getOriginalFilename();
+            String imgName = UUID.randomUUID() + image.getOriginalFilename();
             Path fileNameAndPath = Paths.get(resourcePath.toString(), imgName);
             fileNames.append(imgName);
             Files.write(fileNameAndPath, image.getBytes());

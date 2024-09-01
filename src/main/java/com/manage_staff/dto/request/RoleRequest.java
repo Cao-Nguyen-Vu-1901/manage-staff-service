@@ -1,15 +1,10 @@
 package com.manage_staff.dto.request;
 
-import jakarta.persistence.*;
-<<<<<<< HEAD
 import jakarta.validation.constraints.NotNull;
-=======
->>>>>>> crud/admin
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,11 +16,9 @@ import java.util.Set;
 @Data
 public class RoleRequest {
 
-<<<<<<< HEAD
     @NotNull
-            @Size(min = 2, message = "Name must be at least 2 character")
-=======
->>>>>>> crud/admin
+    @Size(min = 2, message = "Name must be at least 2 character")
+
     String name;
 
     String description;

@@ -17,6 +17,7 @@ import com.manage_staff.service.IPositionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -103,16 +104,19 @@ public class PositionServiceImp implements IPositionService {
         return departmentMapper.positionToPositionResponse(positionRepository.save(position));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteById(String id) {
         positionRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAllById(List<String> ids) {
         positionRepository.deleteAllById(ids);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAll() {
         positionRepository.deleteAll();

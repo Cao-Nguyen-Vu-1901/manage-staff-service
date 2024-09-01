@@ -24,17 +24,22 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS = {
-             "/auth/login", "/auth/introspect",
-            "/auth/logout", "/auth/refresh", "/admin/staff"
+    private final String[] PUBLIC_ENDPOINTS_POST = {
+             "/auth/**"
     };
+    private final String[] PUBLIC_ENDPOINTS_ADMIN = {
+             "/admin/**",
+
+    };
+
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests( request -> request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
+        httpSecurity.authorizeHttpRequests( request -> request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_POST)
                 .permitAll()
+                .requestMatchers(PUBLIC_ENDPOINTS_ADMIN).hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
         );

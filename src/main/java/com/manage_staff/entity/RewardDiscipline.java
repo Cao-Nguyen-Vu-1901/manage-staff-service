@@ -19,10 +19,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "reward_disciplines")
-<<<<<<< HEAD
-=======
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
->>>>>>> feature/paging
+
 public class RewardDiscipline implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

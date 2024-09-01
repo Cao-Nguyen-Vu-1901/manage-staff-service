@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class LeaveDayServiceImp implements ILeaveDayService {
                 .stream().map(leaveDayMapper::toLeaveDayResponse)
                 .collect(Collectors.toList());
     }
+
     @Override
     public List<LeaveDayResponse> findAllById(List<String> ids) {
         return leaveDayRepository.findAllById(ids)
@@ -59,6 +61,7 @@ public class LeaveDayServiceImp implements ILeaveDayService {
                 .orElseThrow(() -> new AppException(ErrorCode.LEAVE_DAY_NOT_EXISTED)));
     }
 
+
     @Override
     public LeaveDayResponse save(LeaveDayRequest request) {
         LeaveDay leaveDay = leaveDayMapper.toLeaveDay(request);
@@ -74,16 +77,19 @@ public class LeaveDayServiceImp implements ILeaveDayService {
                 .toLeaveDayResponse(leaveDayRepository.save(leaveDay));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteById(String id) {
         leaveDayRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAllById(List<String> ids) {
         leaveDayRepository.deleteAllById(ids);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAll() {
         leaveDayRepository.deleteAll();

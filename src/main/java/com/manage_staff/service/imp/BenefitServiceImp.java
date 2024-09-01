@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class BenefitServiceImp implements IBenefitService {
     BenefitMapper benefitMapper;
     BenefitDAO benefitDAO;
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<BenefitResponse> findAll() {
         return benefitRepository.findAll()
@@ -34,6 +37,7 @@ public class BenefitServiceImp implements IBenefitService {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<BenefitResponse> findAllById(List<String> ids) {
         return benefitRepository.findAllById(ids)
@@ -41,6 +45,7 @@ public class BenefitServiceImp implements IBenefitService {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public BenefitResponse findById(String id) {
         return benefitMapper.
@@ -48,12 +53,14 @@ public class BenefitServiceImp implements IBenefitService {
                         .orElseThrow(() -> new AppException(ErrorCode.BENEFIT_NOT_EXISTED)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public BenefitResponse save(BenefitRequest benefitRequest) {
         Benefit benefit = benefitMapper.toBenefit(benefitRequest);
         return benefitMapper.toBenefitResponse(benefitRepository.save(benefit));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public BenefitResponse update(String id, BenefitRequest benefitRequest) {
         Benefit benefit = benefitRepository.findById(id)
@@ -69,16 +76,19 @@ public class BenefitServiceImp implements IBenefitService {
                 .map(benefitMapper::toBenefitResponse);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteById(String id) {
         benefitRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAllById(List<String> ids) {
         benefitRepository.deleteAllById(ids);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAll() {
         benefitRepository.deleteAll();

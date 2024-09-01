@@ -23,7 +23,7 @@ public class SocialInsuranceRequest {
     LocalDate expiryDate;
 
     @NotNull
-            @Size(min = 2, message = "Registration area must be at least 2 characters")
+    @Size(min = 2, message = "Registration area must be at least 2 characters")
     String registrationArea;
 
     String staff;

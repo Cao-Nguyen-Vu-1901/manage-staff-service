@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.rmi.Remote;
@@ -77,16 +78,19 @@ public class RewardDisciplineServiceImp  implements IRewardDisciplineService {
         return rewardDisciplineMapper.toRewardDisciplineResponse(rewardDisciplineRepository.save(rewardDiscipline));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteById(String id) {
         rewardDisciplineRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAllById(List<String> ids) {
         rewardDisciplineRepository.deleteAllById(ids);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteAll() {
         rewardDisciplineRepository.deleteAll();
