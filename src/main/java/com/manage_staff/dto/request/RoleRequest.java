@@ -2,6 +2,7 @@ package com.manage_staff.dto.request;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,9 +20,11 @@ import java.util.Set;
 public class RoleRequest {
 
     @NotNull
-            @Size(min = 2, message = "Name must be at least 2 character")
+    @Size(min = 2, message = "Name must be at least 2 character")
     String name;
 
-    Set<PermissionRequest> permissions = new HashSet<>();
+    String description;
+
+    Set<String> permissions = new HashSet<>();
 
 }

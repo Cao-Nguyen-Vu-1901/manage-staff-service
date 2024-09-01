@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, String> {
     List<Permission> findAllByNameLike(String name);
+    List<Permission> findAllByName(String name);
 }

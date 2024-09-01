@@ -2,6 +2,7 @@ package com.manage_staff.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,22 +20,25 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="id")
+@Table(name = "staff")
+
 public class Staff  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @Column(name = "name")
     String name;
 
     LocalDate dob;
 
     String gender;
- 
+
     String email;
- 
+
+    @Column(name = "phone_number")
     String phoneNumber;
-    
+
     String address;
 
     String username;
@@ -43,31 +47,45 @@ public class Staff  implements Serializable {
 
     boolean status;
 
+    String image;
+
+    @Column(name = "account_verified")
     boolean accountVerified;
 
+    @Column(name = "failed_login_attempts")
     int failedLoginAttempts;
 
+    @Column(name = "create_date")
     LocalDate createDate;
 
+    @Column(name = "promotion_date")
+    LocalDate promotionDate;
 
     @OneToMany(mappedBy = "staff", fetch = FetchType.EAGER)
     @JsonIdentityReference(alwaysAsId = true)
     List<Certification> certifications = new ArrayList<>();
 
-
-    @OneToOne(mappedBy = "staff", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "staff", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     SocialInsurance socialInsurance;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "staff_reward_disciplines",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "reward_disciplines_id"))
     List<RewardDiscipline> rewardDisciplines = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "staff_leaves",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "leaves_id"))
     List<LeaveDay> leaves = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     List<Benefit> benefits = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     Set<Role> roles = new HashSet<>();
 
 }

@@ -21,12 +21,8 @@ public class PositionRequest {
             @Size(min = 1, message = "Name must be at least 1 character")
     String name;
 
-    LocalDate promotionDate;
+    String payroll;
 
-    PayrollRequest payroll;
-
-    List<StaffRequest> staff = new ArrayList<>();
-
-    Department department;
+    String department;
 
 }

@@ -23,6 +23,4 @@ public class DepartmentRequest {
     @Size(min = 1, message = "Description must be at least 1 character")
     String description;
 
-    List<PositionRequest> positions = new ArrayList<>();
-
 }

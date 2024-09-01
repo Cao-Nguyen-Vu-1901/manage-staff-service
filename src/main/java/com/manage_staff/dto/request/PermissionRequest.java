@@ -22,4 +22,6 @@ public class PermissionRequest  {
     @NotNull
     @Size(min = 2, message = "Name must be at least 2 character")
     String name;
+    String description;
+
 }

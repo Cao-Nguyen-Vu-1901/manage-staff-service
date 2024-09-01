@@ -26,7 +26,7 @@ public class SocialInsuranceRequest {
             @Size(min = 2, message = "Registration area must be at least 2 characters")
     String registrationArea;
 
-    StaffRequest staff;
+    String staff;
 
     String socialInsuranceId;
 }
