@@ -37,7 +37,6 @@ public class CertificationServiceImp implements ICertificationService {
 
     StaffRepository staffRepository;
 
-    ObjectMapper objectMapper;
 
     @Override
     public List<CertificationResponse> findAll() {
@@ -71,14 +70,13 @@ public class CertificationServiceImp implements ICertificationService {
     }
 
     @Override
-    public CertificationResponse update(String id, String request, MultipartFile file) throws JsonProcessingException {
+    public CertificationResponse update(String id, CertificationUpdateRequest request, MultipartFile file) throws JsonProcessingException {
 
         Certification certification = certificationRepository.findById(id)
                 .orElseThrow( () -> new AppException(ErrorCode.CERTIFICATION_NOT_EXISTED) );
 
-        CertificationUpdateRequest updateRequest = objectMapper.readValue(request, CertificationUpdateRequest.class);
 
-        certificationMapper.updateCertification(certification,updateRequest);
+        certificationMapper.updateCertification(certification,request);
         try {
             if(file != null){
                 String imageName = ProcessImage.upload(file, "certifications/");

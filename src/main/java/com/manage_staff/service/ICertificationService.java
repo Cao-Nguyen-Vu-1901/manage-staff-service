@@ -18,7 +18,7 @@ public interface ICertificationService {
 
     CertificationResponse save(CertificationRequest request);
 
-    CertificationResponse update (String id, String request, MultipartFile file) throws JsonProcessingException;
+    CertificationResponse update (String id, CertificationUpdateRequest request, MultipartFile file) throws JsonProcessingException;
 
     void deleteById(String id);
     void deleteAllById(List<String> ids);

@@ -27,7 +27,6 @@ import java.util.List;
 public class CertificationController {
 
     ICertificationService certificationService;
-    ObjectMapper objectMapper;
 
     @GetMapping
     public ApiResponse<List<CertificationResponse>> getAll(){
@@ -40,11 +39,10 @@ public class CertificationController {
     }
 
     @PostMapping
-    public ApiResponse<CertificationResponse> create(@RequestParam("file") MultipartFile file, String request) throws IOException {
-        var certification = objectMapper.readValue( request , CertificationRequest.class);
+    public ApiResponse<CertificationResponse> create(@RequestParam(value = "file") MultipartFile file,CertificationRequest request) throws IOException {
         String filePath = ProcessImage.upload(file,"certifications/");
-        certification.setImage(filePath);
-        var response = certificationService.save(certification);
+        request.setImage(filePath);
+        var response = certificationService.save(request);
 
         return ApiResponse.<CertificationResponse>builder().result(response).build();
     }
@@ -55,7 +53,7 @@ public class CertificationController {
         return ApiResponse.<String>builder().result("Permission has been delete").build();
     }
     @PutMapping
-    public ApiResponse<CertificationResponse> update(@RequestParam String id, @RequestParam String request,
+    public ApiResponse<CertificationResponse> update(String id, CertificationUpdateRequest request,
                                                      @RequestParam(value = "file",required = false) MultipartFile file) throws JsonProcessingException {
 
         return ApiResponse.<CertificationResponse>builder()

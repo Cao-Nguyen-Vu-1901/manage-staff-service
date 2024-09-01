@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 public class StaffController {
 
     IStaffService staffService;
-    private final PositionMapper positionMapper;
 
 
     @GetMapping
