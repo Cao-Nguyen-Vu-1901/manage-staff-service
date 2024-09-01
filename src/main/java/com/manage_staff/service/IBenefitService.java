@@ -10,15 +10,11 @@ import java.util.List;
 public interface IBenefitService {
     List<BenefitResponse> findAll();
     List<BenefitResponse> findAllById( List<String> ids);
+    Page<BenefitResponse> paging(String column, String value, int currentPage, int pageSize,
+                                 String sortBy, String orderBy);
     BenefitResponse findById(String id);
-
     BenefitResponse save(BenefitRequest benefitRequest);
-
     BenefitResponse update(String id, BenefitRequest benefitRequest);
-
-    Page<BenefitResponse> paging (String column, String value, int currentPage,
-                                  int pageSize, String orderBy, String sortBy);
-
     void deleteById(String id);
     void deleteAllById(List<String> ids);
     void deleteAll();
