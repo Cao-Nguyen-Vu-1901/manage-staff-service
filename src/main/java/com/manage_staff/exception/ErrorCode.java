@@ -44,6 +44,9 @@ public enum ErrorCode {
     VALUE_INVALID(1301, "Value invalid", HttpStatus.BAD_REQUEST) ,
 
     STAFF_HAVE_SOCIAL_INSURANCE(1401, "Staff have social insurance", HttpStatus.INTERNAL_SERVER_ERROR) ,
+    PASSWORD_IS_NOT_CORRECT(1401, "Password is not correct", HttpStatus.BAD_REQUEST) ,
+    LOGIN_WAIT(1409, "You have entered the wrong password more than 3 times. Please wait for 20 seconds", HttpStatus.BAD_REQUEST) ,
+    ACCOUNT_IS_LOCKED(1400, "Your account has been locked", HttpStatus.BAD_REQUEST) ,
 
 
     ;

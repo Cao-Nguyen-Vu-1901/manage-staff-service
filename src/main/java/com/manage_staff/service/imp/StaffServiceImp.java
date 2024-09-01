@@ -24,6 +24,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.data.domain.*;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,14 +42,9 @@ public class StaffServiceImp implements IStaffService {
 
     StaffRepository staffRepository;
     StaffMapper staffMapper;
-    CertificationRepository certificationRepository;
-    SocialInsuranceRepository socialInsuranceRepository;
-    RewardDisciplineRepository rewardDisciplineRepository;
-    LeaveDayRepository leaveDayRepository;
-    BenefitRepository benefitRepository;
     RoleRepository roleRepository;
     PositionMapper positionMapper;
-
+    PasswordEncoder passwordEncoder;
     StaffDAO staffDAO;
 
     @Override
@@ -68,6 +66,8 @@ public class StaffServiceImp implements IStaffService {
                 .collect(Collectors.toList());
     }
 
+
+    @PostAuthorize("returnObject.username == authentication.name")
     @Override
     public StaffResponse findById(String id) {
         return staffMapper.toStaffResponse(
@@ -78,14 +78,18 @@ public class StaffServiceImp implements IStaffService {
     @Override
     public StaffResponse save(StaffRequest request) {
 
-        if (staffRepository.findByUsername(request.getUsername()) != null) {
+        if (staffRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new AppException(ErrorCode.STAFF_EXISTED);
         }
 
         Staff staff = staffMapper.toStaff(request);
 
-        setStaffRequestMapperIgnore(staff, request);
-
+        if (request.getRoles() != null) {
+            var roleIds = request.getRoles();
+            var roles = roleRepository.findAllById(roleIds);
+            staff.setRoles(new HashSet<>(roles));
+        }
+        staff.setPassword(passwordEncoder.encode(request.getPassword()));
         return staffMapper.toStaffResponse(staffRepository.save(staff));
     }
 
@@ -94,9 +98,11 @@ public class StaffServiceImp implements IStaffService {
         Staff staff = staffRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_EXISTED));
         staffMapper.updateStaff(staff, request);
-//        var roles = roleRepository.findAllById(request.getRoles());
-//        staff.setRoles(new HashSet<>(roles));
-        setStaffRequestUpdateMapperIgnore(staff, request);
+        if (request.getRoles() != null) {
+            var roleIds = request.getRoles();
+            var roles = roleRepository.findAllById(roleIds);
+            staff.setRoles(new HashSet<>(roles));
+        }
         return positionMapper.staffToStaffResponse(staffRepository.save(staff));
     }
 
@@ -139,84 +145,5 @@ public class StaffServiceImp implements IStaffService {
 
 
 
-
-
-    public void setStaffRequestMapperIgnore(Staff staff, StaffRequest request) {
-        if (request.getCertifications() != null) {
-            var certificationIds = request.getCertifications();
-            var certifications = certificationRepository.findAllById(certificationIds);
-            staff.setCertifications(certifications);
-        }
-
-        if (request.getSocialInsurance() != null) {
-            var socialInsuranceId = request.getSocialInsurance();
-            var socialInsurance = socialInsuranceRepository.findById(socialInsuranceId)
-                    .orElseThrow(() -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
-            staff.setSocialInsurance(socialInsurance);
-        }
-
-        if (request.getRewardDisciplines() != null) {
-            var rewardDisciplineIds = request.getRewardDisciplines();
-            var rewardDisciplines = rewardDisciplineRepository.findAllById(rewardDisciplineIds);
-            staff.setRewardDisciplines(rewardDisciplines);
-        }
-
-        if (request.getLeaves() != null) {
-            var leaveDayIds = request.getLeaves();
-            var leaveDays = leaveDayRepository.findAllById(leaveDayIds);
-            staff.setLeaves(leaveDays);
-        }
-
-        if (request.getBenefits() != null) {
-            var benefitIds = request.getBenefits();
-            var benefits = benefitRepository.findAllById(benefitIds);
-            staff.setBenefits(benefits);
-        }
-
-        if (request.getRoles() != null) {
-            var roleIds = request.getRoles();
-            var roles = roleRepository.findAllById(roleIds);
-            staff.setRoles(new HashSet<>(roles));
-        }
-    }
-
-    public void setStaffRequestUpdateMapperIgnore(Staff staff, StaffUpdateRequest request) {
-        if (request.getCertifications() != null) {
-            var certificationIds = request.getCertifications();
-            var certifications = certificationRepository.findAllById(certificationIds);
-            staff.setCertifications(certifications);
-        }
-
-        if (request.getSocialInsurance() != null) {
-            var socialInsuranceId = request.getSocialInsurance();
-            var socialInsurance = socialInsuranceRepository.findById(socialInsuranceId)
-                    .orElseThrow(() -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
-            staff.setSocialInsurance(socialInsurance);
-        }
-
-        if (request.getRewardDisciplines() != null) {
-            var rewardDisciplineIds = request.getRewardDisciplines();
-            var rewardDisciplines = rewardDisciplineRepository.findAllById(rewardDisciplineIds);
-            staff.setRewardDisciplines(rewardDisciplines);
-        }
-
-        if (request.getLeaves() != null) {
-            var leaveDayIds = request.getLeaves();
-            var leaveDays = leaveDayRepository.findAllById(leaveDayIds);
-            staff.setLeaves(leaveDays);
-        }
-
-        if (request.getBenefits() != null) {
-            var benefitIds = request.getBenefits();
-            var benefits = benefitRepository.findAllById(benefitIds);
-            staff.setBenefits(benefits);
-        }
-
-        if (request.getRoles() != null) {
-            var roleIds = request.getRoles();
-            var roles = roleRepository.findAllById(roleIds);
-            staff.setRoles(new HashSet<>(roles));
-        }
-    }
 
 }
