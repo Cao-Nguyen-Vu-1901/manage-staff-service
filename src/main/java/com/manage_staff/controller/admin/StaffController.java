@@ -39,6 +39,7 @@ public class StaffController {
                 ).build();
     }
 
+
     @GetMapping
     public PagingResponse<List<StaffResponse>> paging(@RequestParam(defaultValue = "1") int currentPage,
                                                       @RequestParam(defaultValue = "9") int pageSize,
@@ -78,4 +79,5 @@ public class StaffController {
                 .code(1000).result(staffService.update(id, request, file))
                 .build();
     }
+
 }
