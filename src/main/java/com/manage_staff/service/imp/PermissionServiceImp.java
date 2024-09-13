@@ -57,9 +57,10 @@ public class PermissionServiceImp implements IPermissionService {
 
     @Override
     public PermissionResponse save(PermissionRequest request) {
-        if (!permissionRepository.findAllByName(request.getName()).isEmpty()) {
+        if(permissionRepository.existsByName(request.getName().trim())){
             throw new AppException(ErrorCode.PERMISSION_EXISTED);
         }
+
         Permission permission = permissionMapper.toPermission(request);
         return permissionMapper.toPermissionResponse(permissionRepository.save(permission));
     }
