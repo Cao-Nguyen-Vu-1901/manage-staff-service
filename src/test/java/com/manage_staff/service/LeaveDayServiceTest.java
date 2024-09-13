@@ -9,6 +9,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
@@ -31,6 +33,7 @@ public class LeaveDayServiceTest {
     private ILeaveDayService leaveDayService;
 
     private LeaveDay leaveDay;
+    private LeaveDay leaveDayUpdate;
     private LeaveDayRequest request;
 
     @BeforeEach
@@ -42,6 +45,15 @@ public class LeaveDayServiceTest {
                 .startDate(LocalDate.of(2024, 9, 2))
                 .endDate(LocalDate.of(2024, 9, 2))
                 .reason("Nghỉ theo quy định nhà nước")
+                .regulation("Tuân thủ nghiêm túc")
+                .build();
+
+        leaveDayUpdate = LeaveDay.builder()
+                .id("le1")
+                .name("Nghỉ 5/9")
+                .startDate(LocalDate.of(2024, 9, 5))
+                .endDate(LocalDate.of(2024, 9, 5))
+                .reason("Nghỉ theo quy định công ty")
                 .regulation("Tuân thủ nghiêm túc")
                 .build();
 
@@ -94,6 +106,16 @@ public class LeaveDayServiceTest {
         when(leaveDayRepository.findById(anyString())).thenReturn(Optional.ofNullable(null));
         var exception = assertThrows(AppException.class, ()-> leaveDayService.findById(anyString()));
         Assertions.assertThat(exception.getErrorCode().getCode()).isEqualTo(1204);
+    }
+
+    @Test
+    void updateLeaveDay_success(){
+        when(leaveDayRepository.findById(anyString())).thenReturn(Optional.of(leaveDay));
+        when(leaveDayRepository.save(any())).thenReturn(leaveDayUpdate);
+
+        var response = leaveDayService.save(request);
+        Assertions.assertThat(response.getId()).isEqualTo("le1");
+        Assertions.assertThat(response.getName()).isEqualTo("Nghỉ 5/9");
     }
 
 }
