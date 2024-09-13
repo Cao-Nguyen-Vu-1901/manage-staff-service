@@ -1,22 +1,20 @@
 package com.manage_staff.mapper;
 
-import com.manage_staff.dto.request.PermissionRequest;
-import com.manage_staff.dto.request.PositionRequest;
-import com.manage_staff.dto.request.PositionUpdateRequest;
-import com.manage_staff.dto.response.CertificationResponse;
-import com.manage_staff.dto.response.PositionResponse;
-import com.manage_staff.dto.response.StaffResponse;
-import com.manage_staff.entity.Certification;
-import com.manage_staff.entity.Position;
-import com.manage_staff.entity.Staff;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.manage_staff.dto.request.PositionRequest;
+import com.manage_staff.dto.request.PositionUpdateRequest;
+import com.manage_staff.dto.response.PositionResponse;
+import com.manage_staff.dto.response.StaffResponse;
+import com.manage_staff.entity.Position;
+import com.manage_staff.entity.Staff;
 
 @Mapper(componentModel = "spring")
 public interface PositionMapper {
@@ -36,9 +34,7 @@ public interface PositionMapper {
         if (staff == null) {
             return new ArrayList<>();
         }
-        return staff.stream()
-                .map(this::staffToStaffResponse)
-                .collect(Collectors.toList());
+        return staff.stream().map(this::staffToStaffResponse).collect(Collectors.toList());
     }
 
     @Mapping(target = "certifications", ignore = true)

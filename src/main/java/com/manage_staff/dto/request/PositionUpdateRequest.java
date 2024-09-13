@@ -1,6 +1,5 @@
 package com.manage_staff.dto.request;
 
-import com.manage_staff.entity.Department;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

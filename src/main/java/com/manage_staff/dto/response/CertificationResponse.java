@@ -1,10 +1,11 @@
 package com.manage_staff.dto.response;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -28,4 +29,3 @@ public class CertificationResponse {
 
     StaffResponse staff;
 }
-

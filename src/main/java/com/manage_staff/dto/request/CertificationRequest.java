@@ -1,13 +1,14 @@
 package com.manage_staff.dto.request;
 
-import com.manage_staff.validator.DayConstraint;
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import com.manage_staff.validator.DayConstraint;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -35,4 +36,3 @@ public class CertificationRequest {
 
     String image;
 }
-

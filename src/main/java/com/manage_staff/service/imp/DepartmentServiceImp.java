@@ -1,5 +1,12 @@
 package com.manage_staff.service.imp;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
 import com.manage_staff.dao.DepartmentDAO;
 import com.manage_staff.dto.request.DepartmentRequest;
 import com.manage_staff.dto.response.DepartmentResponse;
@@ -8,17 +15,11 @@ import com.manage_staff.exception.AppException;
 import com.manage_staff.exception.ErrorCode;
 import com.manage_staff.mapper.DepartmentMapper;
 import com.manage_staff.repository.DepartmentRepository;
-import com.manage_staff.repository.PositionRepository;
 import com.manage_staff.service.IDepartmentService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -29,33 +30,33 @@ public class DepartmentServiceImp implements IDepartmentService {
     DepartmentMapper departmentMapper;
     DepartmentDAO departmentDAO;
 
-
     @Override
     public List<DepartmentResponse> findAll() {
-        return departmentRepository.findAll()
-                .stream().map(departmentMapper::toDepartmentResponse)
+        return departmentRepository.findAll().stream()
+                .map(departmentMapper::toDepartmentResponse)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public List<DepartmentResponse> findAllByNameLike(String name) {
-        return departmentRepository.findAllByNameLike("%" + name + "%")
-                .stream().map(departmentMapper::toDepartmentResponse)
+        return departmentRepository.findAllByNameLike("%" + name + "%").stream()
+                .map(departmentMapper::toDepartmentResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Page<DepartmentResponse> paging(String column, String value, int currentPage, int pageSize, String orderBy, String sortBy) {
-        return departmentDAO.paging(column,value,currentPage,pageSize,orderBy,sortBy)
+    public Page<DepartmentResponse> paging(
+            String column, String value, int currentPage, int pageSize, String orderBy, String sortBy) {
+        return departmentDAO
+                .paging(column, value, currentPage, pageSize, orderBy, sortBy)
                 .map(departmentMapper::toDepartmentResponse);
     }
 
     @Override
     public DepartmentResponse findById(String id) {
-        return departmentMapper
-                .toDepartmentResponse(departmentRepository.findById(id).orElseThrow(
-                () -> new AppException((ErrorCode.DEPARTMENT_NOT_EXISTED))));
+        return departmentMapper.toDepartmentResponse(departmentRepository
+                .findById(id)
+                .orElseThrow(() -> new AppException((ErrorCode.DEPARTMENT_NOT_EXISTED))));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -69,10 +70,10 @@ public class DepartmentServiceImp implements IDepartmentService {
     @Override
     public DepartmentResponse update(String id, DepartmentRequest request) {
 
-        Department department = departmentRepository.findById(id)
-                .orElseThrow( () -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
+        Department department =
+                departmentRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
 
-        departmentMapper.updateDepartment(department,request);
+        departmentMapper.updateDepartment(department, request);
 
         return departmentMapper.toDepartmentResponse(departmentRepository.save(department));
     }

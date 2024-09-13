@@ -1,38 +1,32 @@
 package com.manage_staff.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.manage_staff.dto.request.CertificationRequest;
 import com.manage_staff.dto.request.CertificationUpdateRequest;
 import com.manage_staff.dto.response.CertificationResponse;
-import com.manage_staff.entity.Certification;
-
-<<<<<<< HEAD
-import org.springframework.web.multipart.MultipartFile;
-
-import org.springframework.data.domain.Page;
-
-=======
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
-
-import java.util.List;
 
 public interface ICertificationService {
 
+    List<CertificationResponse> findAllById(List<String> ids);
 
-    List<CertificationResponse> findAllById( List<String> ids);
+    Page<CertificationResponse> paging(
+            String column, String value, int currentPage, int pageSize, String orderBy, String sortBy);
 
-    Page<CertificationResponse> paging(String column, String value,
-                                       int currentPage, int pageSize,
-                                       String orderBy, String sortBy);
-
-    CertificationResponse findById( String id);
+    CertificationResponse findById(String id);
 
     CertificationResponse save(CertificationRequest request);
 
-    CertificationResponse update (String id, CertificationUpdateRequest request, MultipartFile file) throws JsonProcessingException;
+    CertificationResponse update(String id, CertificationUpdateRequest request, MultipartFile file)
+            throws JsonProcessingException;
 
     void deleteById(String id);
+
     void deleteAllById(List<String> ids);
+
     void deleteAll();
 }

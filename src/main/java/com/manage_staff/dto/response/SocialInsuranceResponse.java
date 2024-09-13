@@ -1,14 +1,13 @@
 package com.manage_staff.dto.response;
 
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
-import java.io.Serializable;
 import java.time.LocalDate;
 
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @AllArgsConstructor

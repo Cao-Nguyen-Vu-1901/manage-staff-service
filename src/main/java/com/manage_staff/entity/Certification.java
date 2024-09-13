@@ -1,12 +1,14 @@
 package com.manage_staff.entity;
 
-import com.fasterxml.jackson.annotation.*;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.io.Serializable;
 import java.time.LocalDate;
+
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.*;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -16,8 +18,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "certifications")
-
-public class Certification  implements Serializable {
+public class Certification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
@@ -40,4 +41,3 @@ public class Certification  implements Serializable {
     @JsonIdentityReference(alwaysAsId = true)
     Staff staff;
 }
-

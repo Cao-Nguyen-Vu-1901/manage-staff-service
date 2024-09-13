@@ -1,19 +1,18 @@
 package com.manage_staff.service;
 
+import java.util.List;
 
-import com.manage_staff.dto.request.PayrollRequest;
-import com.manage_staff.dto.response.LeaveDayResponse;
-import com.manage_staff.dto.response.PayrollResponse;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
+import com.manage_staff.dto.request.PayrollRequest;
+import com.manage_staff.dto.response.PayrollResponse;
 
 public interface IPayrollService {
     List<PayrollResponse> findAll();
 
-    Page<PayrollResponse> paging(String column, String value,
-                                 int currentPage, int pageSize,
-                                 String orderBy, String sortBy);
+    Page<PayrollResponse> paging(
+            String column, String value, int currentPage, int pageSize, String orderBy, String sortBy);
+
     PayrollResponse findById(String id);
 
     PayrollResponse save(PayrollRequest request);

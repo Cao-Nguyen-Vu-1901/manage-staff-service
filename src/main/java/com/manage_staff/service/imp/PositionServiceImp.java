@@ -1,6 +1,11 @@
 package com.manage_staff.service.imp;
 
-import com.manage_staff.dto.request.PermissionRequest;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
 import com.manage_staff.dto.request.PositionRequest;
 import com.manage_staff.dto.request.PositionUpdateRequest;
 import com.manage_staff.dto.response.PositionResponse;
@@ -14,14 +19,10 @@ import com.manage_staff.repository.PayrollRepository;
 import com.manage_staff.repository.PositionRepository;
 import com.manage_staff.repository.StaffRepository;
 import com.manage_staff.service.IPositionService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -37,49 +38,50 @@ public class PositionServiceImp implements IPositionService {
 
     @Override
     public List<PositionResponse> findAll() {
-        return positionRepository.findAll()
-                .stream().map(positionMapper::toPositionResponse)
+        return positionRepository.findAll().stream()
+                .map(positionMapper::toPositionResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PositionResponse> findAllById(List<String> ids) {
-        return positionRepository.findAllById(ids)
-                .stream().map(positionMapper::toPositionResponse)
+        return positionRepository.findAllById(ids).stream()
+                .map(positionMapper::toPositionResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PositionResponse> findAllByNameLike(String name) {
-        return positionRepository.findAllByNameLike("%" + name + "%")
-                .stream().map(positionMapper::toPositionResponse)
+        return positionRepository.findAllByNameLike("%" + name + "%").stream()
+                .map(positionMapper::toPositionResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PositionResponse findById(String id) {
-        return positionMapper
-                .toPositionResponse(positionRepository.findById(id)
-                        .orElseThrow(() -> new AppException(ErrorCode.POSITION_NOT_EXISTED)));
+        return positionMapper.toPositionResponse(
+                positionRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POSITION_NOT_EXISTED)));
     }
 
     @Override
     public PositionResponse save(PositionRequest request) {
-        if(!positionRepository.findAllByName(request.getName()).isEmpty()){
+        if (!positionRepository.findAllByName(request.getName()).isEmpty()) {
             throw new AppException(ErrorCode.POSITION_EXISTED);
         } else {
             Position position = positionMapper.toPosition(request);
 
-            if(request.getPayroll() != null){
+            if (request.getPayroll() != null) {
                 String payrollId = request.getPayroll();
-                var payroll = payrollRepository.findById(payrollId).orElseThrow( () -> new AppException(ErrorCode.PAYROLL_NOT_EXISTED));
+                var payroll = payrollRepository
+                        .findById(payrollId)
+                        .orElseThrow(() -> new AppException(ErrorCode.PAYROLL_NOT_EXISTED));
                 position.setPayroll(payroll);
             }
             if (request.getDepartment() != null) {
                 String departmentId = request.getDepartment();
-                var department = departmentRepository.findById(departmentId)
-                        .orElseThrow(
-                                () -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
+                var department = departmentRepository
+                        .findById(departmentId)
+                        .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
                 position.setDepartment(department);
             }
             return positionMapper.toPositionResponse(positionRepository.save(position));
@@ -88,19 +90,21 @@ public class PositionServiceImp implements IPositionService {
 
     @Override
     public PositionResponse update(String id, PositionUpdateRequest request) {
-        Position position = positionRepository.findById(id)
-                .orElseThrow( () -> new AppException(ErrorCode.POSITION_NOT_EXISTED));
-        if(request.getPayroll() != null){
-            var payrolls = payrollRepository.findById(request.getPayroll())
-                    .orElseThrow(()-> new AppException(ErrorCode.PAYROLL_NOT_EXISTED));
+        Position position =
+                positionRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POSITION_NOT_EXISTED));
+        if (request.getPayroll() != null) {
+            var payrolls = payrollRepository
+                    .findById(request.getPayroll())
+                    .orElseThrow(() -> new AppException(ErrorCode.PAYROLL_NOT_EXISTED));
             position.setPayroll(payrolls);
         }
-        if(request.getDepartment() != null){
-            var department = departmentRepository.findById(request.getDepartment())
-                    .orElseThrow( () -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
+        if (request.getDepartment() != null) {
+            var department = departmentRepository
+                    .findById(request.getDepartment())
+                    .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_EXISTED));
             position.setDepartment(department);
         }
-        positionMapper.updatePosition(position,request);
+        positionMapper.updatePosition(position, request);
         return departmentMapper.positionToPositionResponse(positionRepository.save(position));
     }
 

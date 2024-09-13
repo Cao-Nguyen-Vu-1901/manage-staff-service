@@ -1,15 +1,15 @@
 package com.manage_staff.dto.request;
 
-
-import com.manage_staff.validator.DayConstraint;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import com.manage_staff.validator.DayConstraint;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,5 +33,4 @@ public class BenefitRequest {
     @NotNull
     @DayConstraint
     LocalDate effectiveDate;
-
 }

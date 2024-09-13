@@ -1,5 +1,18 @@
 package com.manage_staff.service.imp;
 
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.StringJoiner;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
 import com.manage_staff.dto.request.AuthenticationRequest;
 import com.manage_staff.dto.request.IntrospectRequest;
 import com.manage_staff.dto.request.LogoutRequest;
@@ -17,23 +30,12 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import java.text.ParseException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.StringJoiner;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +51,12 @@ public class AuthenticationService {
 
     @NonFinal
     private int totalLoginFailed = 0;
+
+    @NonFinal
+    private int oldNameRequestNumber = 0;
+
+    @NonFinal
+    private String oldNameRequest = "";
 
     @NonFinal
     private Date loginFailedTime;
@@ -82,10 +90,10 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
 
-        if(totalLoginFailed == 2)
-            staffRepository.updateStatusById(false,request.getUsername());
+        oldNameRequest = request.getUsername();
+        if (totalLoginFailed == 2) staffRepository.updateStatusById(false, request.getUsername());
 
-        if(loginFailed == failedNumber){
+        if (loginFailed == failedNumber) {
 
             Date now = Date.from(Instant.now()); // Thêm 25 giây vào date1
 
@@ -94,32 +102,32 @@ public class AuthenticationService {
             long differenceInSeconds = differenceInMillis / 1000;
             log.info("Time {}", differenceInSeconds);
 
-            if(differenceInSeconds >= 25){
+            if (differenceInSeconds >= 25) {
                 totalLoginFailed++;
                 loginFailed = 0;
             }
         }
 
-        if(loginFailed < failedNumber){
+        if (loginFailed < failedNumber) {
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
-            var staff = staffRepository.findByUsername(request.getUsername())
+            var staff = staffRepository
+                    .findByUsername(request.getUsername())
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-            if(!staff.isStatus())
-                throw new AppException(ErrorCode.ACCOUNT_IS_LOCKED);
+            if (!staff.isStatus()) throw new AppException(ErrorCode.ACCOUNT_IS_LOCKED);
 
             boolean authenticated = passwordEncoder.matches(request.getPassword(), staff.getPassword());
             if (!authenticated) {
                 loginFailed++;
                 log.info("login fail {}", loginFailed);
-                if(loginFailed == 1) loginFailedTime = new Date();
+                if (loginFailed == 1) loginFailedTime = new Date();
                 throw new AppException(ErrorCode.PASSWORD_IS_NOT_CORRECT);
             }
 
             var token = generateToken(staff);
             return AuthenticationResponse.builder().token(token).build();
-        }else{
+        } else {
             throw new AppException(ErrorCode.LOGIN_WAIT);
         }
     }
@@ -135,8 +143,8 @@ public class AuthenticationService {
 
         invalidatedTokenRepository.save(invalidatedToken);
         var username = signedJWT.getJWTClaimsSet().getSubject();
-        var user = staffRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        var user =
+                staffRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
         var token = generateToken(user);
         return AuthenticationResponse.builder().token(token).build();
@@ -163,8 +171,8 @@ public class AuthenticationService {
                 .subject(staff.getUsername())
                 .issuer("nv.com")
                 .issueTime(new Date())
-                .expirationTime(
-                        new Date(Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()))
+                .expirationTime(new Date(
+                        Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()))
                 .jwtID(UUID.randomUUID().toString())
                 .claim("scope", builderScope(staff))
                 .build();
@@ -187,8 +195,7 @@ public class AuthenticationService {
             staff.getRoles().forEach(role -> {
                 stringJoiner.add("ROLE_" + role.getName());
                 if (!CollectionUtils.isEmpty(role.getPermissions()))
-                    role.getPermissions().forEach(
-                            permission -> stringJoiner.add(permission.getName()));
+                    role.getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
             });
         }
         return stringJoiner.toString();
@@ -200,8 +207,13 @@ public class AuthenticationService {
 
         // Tại vì token mới được generate chỉ có thời gian hay expiryTime là 1h nhưng time refresh
         // lại là 2h nên phải lấy issue time + 2h để check
-        Date experyDate = (isRefresh) ? new Date(signedJWT.getJWTClaimsSet().getIssueTime()
-                .toInstant().plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS).toEpochMilli())
+        Date experyDate = (isRefresh)
+                ? new Date(signedJWT
+                        .getJWTClaimsSet()
+                        .getIssueTime()
+                        .toInstant()
+                        .plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS)
+                        .toEpochMilli())
                 : signedJWT.getJWTClaimsSet().getExpirationTime();
         var verified = signedJWT.verify(verifier);
         if (!verified && experyDate.after(new Date())) throw new AppException(ErrorCode.UNAUTHENTICATED);

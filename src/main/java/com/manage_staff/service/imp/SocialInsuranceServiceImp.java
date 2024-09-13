@@ -1,5 +1,12 @@
 package com.manage_staff.service.imp;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
 import com.manage_staff.dao.SocialInsuranceDAO;
 import com.manage_staff.dto.request.SocialInsuranceRequest;
 import com.manage_staff.dto.request.SocialInsuranceUpdateRequest;
@@ -11,16 +18,10 @@ import com.manage_staff.mapper.SocialInsuranceMapper;
 import com.manage_staff.repository.SocialInsuranceRepository;
 import com.manage_staff.repository.StaffRepository;
 import com.manage_staff.service.ISocialInsuranceService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -35,15 +36,15 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
 
     @Override
     public List<SocialInsuranceResponse> findAll() {
-        return socialInsuranceRepository.findAll()
-                .stream().map(socialInsuranceMapper::toSocialInsuranceResponse)
+        return socialInsuranceRepository.findAll().stream()
+                .map(socialInsuranceMapper::toSocialInsuranceResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public SocialInsuranceResponse findById(String id) {
-        return socialInsuranceMapper
-                .toSocialInsuranceResponse(socialInsuranceRepository.findById(id)
+        return socialInsuranceMapper.toSocialInsuranceResponse(socialInsuranceRepository
+                .findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED)));
     }
 
@@ -51,25 +52,24 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
     public SocialInsuranceResponse save(SocialInsuranceRequest request) {
         SocialInsurance socialInsurance = socialInsuranceMapper.toSocialInsurance(request);
 
-        var staff = staffRepository.findById(request.getStaff())
-                .orElseThrow( () -> new AppException(ErrorCode.STAFF_NOT_EXISTED) );
+        var staff = staffRepository
+                .findById(request.getStaff())
+                .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_EXISTED));
         socialInsurance.setStaff(staff);
 
-        try{
-            return socialInsuranceMapper
-                    .toSocialInsuranceResponse(socialInsuranceRepository.save(socialInsurance));
-        }catch (AppException e){
+        try {
+            return socialInsuranceMapper.toSocialInsuranceResponse(socialInsuranceRepository.save(socialInsurance));
+        } catch (AppException e) {
             throw new AppException(ErrorCode.STAFF_HAVE_SOCIAL_INSURANCE);
         }
-
-
     }
 
     @Override
     public SocialInsuranceResponse update(String id, SocialInsuranceUpdateRequest request) {
-        SocialInsurance socialInsurance = socialInsuranceRepository.findById(id)
-                .orElseThrow( () -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
-        socialInsuranceMapper.updateSocialInsurance(socialInsurance,request);
+        SocialInsurance socialInsurance = socialInsuranceRepository
+                .findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.SOCIAL_INSURANCE_NOT_EXISTED));
+        socialInsuranceMapper.updateSocialInsurance(socialInsurance, request);
 
         return socialInsuranceMapper.toSocialInsuranceResponse(socialInsuranceRepository.save(socialInsurance));
     }
@@ -93,9 +93,10 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
     }
 
     @Override
-    public Page<SocialInsuranceResponse> paging(String column, String value, int currentPage,
-                                                int pageSize, String orderBy, String sortBy) {
-        return socialInsuranceDAO.paging(column, value, currentPage, pageSize, orderBy, sortBy)
+    public Page<SocialInsuranceResponse> paging(
+            String column, String value, int currentPage, int pageSize, String orderBy, String sortBy) {
+        return socialInsuranceDAO
+                .paging(column, value, currentPage, pageSize, orderBy, sortBy)
                 .map(socialInsuranceMapper::toSocialInsuranceResponse);
     }
 }

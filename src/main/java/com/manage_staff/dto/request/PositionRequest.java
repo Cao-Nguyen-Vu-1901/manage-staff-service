@@ -1,14 +1,10 @@
 package com.manage_staff.dto.request;
 
-import com.manage_staff.entity.Department;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,5 +20,4 @@ public class PositionRequest {
     String payroll;
 
     String department;
-
 }

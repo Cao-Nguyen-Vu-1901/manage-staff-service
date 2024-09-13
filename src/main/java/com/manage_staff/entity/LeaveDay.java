@@ -1,13 +1,12 @@
 package com.manage_staff.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.io.Serializable;
 import java.time.LocalDate;
+
+import jakarta.persistence.*;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -17,7 +16,6 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "leave_days")
-
 public class LeaveDay implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,6 +32,4 @@ public class LeaveDay implements Serializable {
     String regulation;
 
     String reason;
-
-
 }

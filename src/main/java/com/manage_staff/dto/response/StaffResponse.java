@@ -1,16 +1,16 @@
 package com.manage_staff.dto.response;
 
-import com.fasterxml.jackson.annotation.*;
-import com.manage_staff.entity.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.*;
+import com.manage_staff.entity.*;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -60,4 +60,3 @@ public class StaffResponse {
 
     Set<RoleResponse> roles = new HashSet<>();
 }
-

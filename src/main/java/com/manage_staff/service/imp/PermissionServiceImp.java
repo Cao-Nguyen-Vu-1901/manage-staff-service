@@ -1,5 +1,11 @@
 package com.manage_staff.service.imp;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
 import com.manage_staff.dto.request.PermissionRequest;
 import com.manage_staff.dto.response.PermissionResponse;
 import com.manage_staff.entity.Permission;
@@ -8,14 +14,10 @@ import com.manage_staff.exception.ErrorCode;
 import com.manage_staff.mapper.PermissionMapper;
 import com.manage_staff.repository.PermissionRepository;
 import com.manage_staff.service.IPermissionService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -27,33 +29,35 @@ public class PermissionServiceImp implements IPermissionService {
 
     @Override
     public List<PermissionResponse> findAll() {
-        return permissionRepository.findAll()
-                .stream().map(permissionMapper::toPermissionResponse)
+        return permissionRepository.findAll().stream()
+                .map(permissionMapper::toPermissionResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PermissionResponse> findAllById(List<String> ids) {
-        return permissionRepository.findAllById(ids)
-                .stream().map(permissionMapper::toPermissionResponse).collect(Collectors.toList());
+        return permissionRepository.findAllById(ids).stream()
+                .map(permissionMapper::toPermissionResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<PermissionResponse> findAllByNameLike(String name) {
-        return permissionRepository.findAllByNameLike("%" + name + "%")
-                .stream().map(permissionMapper::toPermissionResponse)
+        return permissionRepository.findAllByNameLike("%" + name + "%").stream()
+                .map(permissionMapper::toPermissionResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PermissionResponse findById(String id) {
-        return permissionMapper.toPermissionResponse(permissionRepository.findById(id)
+        return permissionMapper.toPermissionResponse(permissionRepository
+                .findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PERMISSION_NOT_EXISTED)));
     }
 
     @Override
     public PermissionResponse save(PermissionRequest request) {
-        if(!permissionRepository.findAllByName(request.getName()).isEmpty()){
+        if (!permissionRepository.findAllByName(request.getName()).isEmpty()) {
             throw new AppException(ErrorCode.PERMISSION_EXISTED);
         }
         Permission permission = permissionMapper.toPermission(request);
@@ -62,8 +66,9 @@ public class PermissionServiceImp implements IPermissionService {
 
     @Override
     public PermissionResponse update(String id, PermissionRequest request) {
-        Permission permission = permissionRepository.findById(id).orElseThrow( ()-> new AppException(ErrorCode.PERMISSION_NOT_EXISTED));
-        permissionMapper.updatePermission(permission,request);
+        Permission permission =
+                permissionRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PERMISSION_NOT_EXISTED));
+        permissionMapper.updatePermission(permission, request);
         return permissionMapper.toPermissionResponse(permissionRepository.save(permission));
     }
 

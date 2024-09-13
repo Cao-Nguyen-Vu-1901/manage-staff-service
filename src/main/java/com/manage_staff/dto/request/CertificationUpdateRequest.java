@@ -1,10 +1,9 @@
 package com.manage_staff.dto.request;
 
+import java.time.LocalDate;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +19,4 @@ public class CertificationUpdateRequest {
     String issuingAuthority;
 
     LocalDate expiryDate;
-
-
 }
-

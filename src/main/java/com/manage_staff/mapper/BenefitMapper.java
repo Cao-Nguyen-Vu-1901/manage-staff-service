@@ -1,11 +1,11 @@
 package com.manage_staff.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+
 import com.manage_staff.dto.request.BenefitRequest;
 import com.manage_staff.dto.response.BenefitResponse;
 import com.manage_staff.entity.Benefit;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface BenefitMapper {

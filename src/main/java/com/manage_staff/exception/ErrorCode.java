@@ -1,12 +1,12 @@
 package com.manage_staff.exception;
 
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
+import lombok.Getter;
+
 @Getter
 public enum ErrorCode {
-
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(1001, "Uncategorized error", HttpStatus.BAD_REQUEST),
     USERNAME_INVALID(1003, "Username must be at least {min} characters", HttpStatus.BAD_REQUEST),
@@ -45,10 +45,14 @@ public enum ErrorCode {
 
     STAFF_HAVE_SOCIAL_INSURANCE(1401, "Staff have social insurance", HttpStatus.INTERNAL_SERVER_ERROR),
     PASSWORD_IS_NOT_CORRECT(1401, "Password is not correct", HttpStatus.BAD_REQUEST),
-    LOGIN_WAIT(1409, "You have entered the wrong password more than 3 times. Please wait for 20 seconds", HttpStatus.BAD_REQUEST),
+    LOGIN_WAIT(
+            1409,
+            "You have entered the wrong password more than 3 times. Please wait for 20 seconds",
+            HttpStatus.BAD_REQUEST),
     ACCOUNT_IS_LOCKED(1400, "Your account has been locked", HttpStatus.BAD_REQUEST),
 
-    IMAGE_NOT_FOUND(1404, "Image not found", HttpStatus.NOT_FOUND);;
+    IMAGE_NOT_FOUND(1404, "Image not found", HttpStatus.NOT_FOUND);
+    ;
 
     ErrorCode(int code, String message, HttpStatusCode status) {
         this.code = code;

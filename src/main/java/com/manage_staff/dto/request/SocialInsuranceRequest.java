@@ -1,13 +1,12 @@
 package com.manage_staff.dto.request;
 
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
-
 
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,16 +1,11 @@
 package com.manage_staff.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
-import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +13,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LeaveDayResponse  {
+public class LeaveDayResponse {
 
     String id;
 
@@ -31,6 +26,4 @@ public class LeaveDayResponse  {
     String regulation;
 
     String reason;
-
-
 }
