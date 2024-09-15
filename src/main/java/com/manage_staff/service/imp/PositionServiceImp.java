@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.manage_staff.dto.request.PositionRequest;
-import com.manage_staff.dto.request.PositionUpdateRequest;
 import com.manage_staff.dto.response.PositionResponse;
 import com.manage_staff.entity.Position;
 import com.manage_staff.exception.AppException;
@@ -65,7 +64,7 @@ public class PositionServiceImp implements IPositionService {
 
     @Override
     public PositionResponse save(PositionRequest request) {
-        if (!positionRepository.findAllByName(request.getName()).isEmpty()) {
+        if (positionRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.POSITION_EXISTED);
         } else {
             Position position = positionMapper.toPosition(request);
@@ -89,7 +88,7 @@ public class PositionServiceImp implements IPositionService {
     }
 
     @Override
-    public PositionResponse update(String id, PositionUpdateRequest request) {
+    public PositionResponse update(String id, PositionRequest request) {
         Position position =
                 positionRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.POSITION_NOT_EXISTED));
         if (request.getPayroll() != null) {

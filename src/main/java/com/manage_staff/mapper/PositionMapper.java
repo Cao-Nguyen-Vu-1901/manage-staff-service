@@ -10,7 +10,6 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 import com.manage_staff.dto.request.PositionRequest;
-import com.manage_staff.dto.request.PositionUpdateRequest;
 import com.manage_staff.dto.response.PositionResponse;
 import com.manage_staff.dto.response.StaffResponse;
 import com.manage_staff.entity.Position;
@@ -43,5 +42,5 @@ public interface PositionMapper {
 
     @Mapping(target = "payroll", ignore = true)
     @Mapping(target = "department", ignore = true)
-    void updatePosition(@MappingTarget Position position, PositionUpdateRequest request);
+    void updatePosition(@MappingTarget Position position, PositionRequest request);
 }

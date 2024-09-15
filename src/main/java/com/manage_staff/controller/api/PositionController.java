@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import com.manage_staff.dto.request.PositionRequest;
-import com.manage_staff.dto.request.PositionUpdateRequest;
 import com.manage_staff.dto.response.ApiResponse;
 import com.manage_staff.dto.response.PositionResponse;
 import com.manage_staff.service.IPositionService;
@@ -52,7 +51,7 @@ public class PositionController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<PositionResponse> update(@PathVariable String id, @RequestBody PositionUpdateRequest request) {
+    public ApiResponse<PositionResponse> update(@PathVariable String id, @RequestBody PositionRequest request) {
         return ApiResponse.<PositionResponse>builder()
                 .code(1000)
                 .result(positionService.update(id, request))

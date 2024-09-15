@@ -3,7 +3,6 @@ package com.manage_staff.service;
 import java.util.List;
 
 import com.manage_staff.dto.request.PositionRequest;
-import com.manage_staff.dto.request.PositionUpdateRequest;
 import com.manage_staff.dto.response.PositionResponse;
 
 public interface IPositionService {
@@ -17,7 +16,7 @@ public interface IPositionService {
 
     PositionResponse save(PositionRequest request);
 
-    PositionResponse update(String id, PositionUpdateRequest request);
+    PositionResponse update(String id, PositionRequest request);
 
     void deleteById(String id);
 
