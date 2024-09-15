@@ -67,7 +67,7 @@ public class StaffServiceImp implements IStaffService {
                 .collect(Collectors.toList());
     }
 
-    @PostAuthorize("returnObject.username == authentication.name")
+//    @PostAuthorize("returnObject.username == authentication.name")
     @Override
     public StaffResponse findById(String id) {
         return staffMapper.toStaffResponse(
@@ -77,7 +77,7 @@ public class StaffServiceImp implements IStaffService {
     @Override
     public StaffResponse save(StaffRequest request, MultipartFile file) throws IOException {
 
-        if (staffRepository.findByUsername(request.getUsername()).isPresent()) {
+        if (staffRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.STAFF_EXISTED);
         }
 
@@ -87,6 +87,8 @@ public class StaffServiceImp implements IStaffService {
             var roleIds = request.getRoles();
             var roles = roleRepository.findAllById(roleIds);
             staff.setRoles(new HashSet<>(roles));
+        }else {
+            throw new AppException(ErrorCode.ROLE_NOT_EXISTED);
         }
         staff.setPassword(passwordEncoder.encode(request.getPassword()));
 
@@ -100,11 +102,6 @@ public class StaffServiceImp implements IStaffService {
         staff.setFailedLoginAttempts(0);
         staff.setCreateDate(LocalDate.now());
 
-        if (request.getRoles() != null) {
-            var roleIds = request.getRoles();
-            var roles = roleRepository.findAllById(roleIds);
-            staff.setRoles(new HashSet<>(roles));
-        }
         staff.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return staffMapper.toStaffResponse(staffRepository.save(staff));
@@ -120,7 +117,8 @@ public class StaffServiceImp implements IStaffService {
             var roleIds = request.getRoles();
             var roles = roleRepository.findAllById(roleIds);
             staff.setRoles(new HashSet<>(roles));
-        }
+        }else
+            throw new AppException(ErrorCode.ROLE_NOT_EXISTED);
         try {
             if (file != null) {
                 String imageName = ProcessImage.upload(file, "staff/");

@@ -20,6 +20,7 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
     List<Staff> findAllByNameLike(String name);
 
     Optional<Staff> findByUsername(String username);
+    boolean existsByUsername(String username);
 
     Page<Staff> findAllByNameLike(Pageable pageable, String name);
 

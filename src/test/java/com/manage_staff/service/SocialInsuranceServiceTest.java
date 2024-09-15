@@ -6,12 +6,12 @@ import com.manage_staff.entity.SocialInsurance;
 import com.manage_staff.entity.Staff;
 import com.manage_staff.exception.AppException;
 import com.manage_staff.repository.SocialInsuranceRepository;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.manage_staff.repository.StaffRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
