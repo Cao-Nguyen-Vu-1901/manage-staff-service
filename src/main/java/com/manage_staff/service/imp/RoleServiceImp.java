@@ -58,17 +58,16 @@ public class RoleServiceImp implements IRoleService {
 
     @Override
     public RoleResponse save(RoleRequest request) {
-        List<Role> roles = roleRepository.findAllByName(request.getName());
-        if (!roles.isEmpty()) {
-            throw new AppException(ErrorCode.ROLE_EXISTED);
-        } else {
 
-            Role role = roleMapper.toRole(request);
-            var permissionIds = request.getPermissions();
-            var permission = permissionRepository.findAllById(permissionIds);
-            role.setPermissions(new HashSet<>(permission));
-            return roleMapper.toRoleResponse(roleRepository.save(role));
+        if (roleRepository.existsByName(request.getName())) {
+            throw new AppException(ErrorCode.ROLE_EXISTED);
         }
+        Role role = roleMapper.toRole(request);
+        var permissionIds = request.getPermissions();
+        var permission = permissionRepository.findAllById(permissionIds);
+        role.setPermissions(new HashSet<>(permission));
+        return roleMapper.toRoleResponse(roleRepository.save(role));
+
     }
 
     @Override
@@ -77,6 +76,8 @@ public class RoleServiceImp implements IRoleService {
         if (request.getPermissions() != null) {
             var permissions = permissionRepository.findAllById(request.getPermissions());
             role.setPermissions(new HashSet<>(permissions));
+        }else{
+            throw new AppException(ErrorCode.PERMISSION_NOT_EXISTED);
         }
         roleMapper.updateRole(role, request);
         return roleMapper.toRoleResponse(roleRepository.save(role));

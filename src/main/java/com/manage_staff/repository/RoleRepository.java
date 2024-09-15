@@ -11,5 +11,5 @@ import com.manage_staff.entity.Role;
 public interface RoleRepository extends JpaRepository<Role, String> {
     List<Role> findAllByNameLike(String name);
 
-    List<Role> findAllByName(String name);
+    boolean existsByName(String name);
 }
