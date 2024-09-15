@@ -110,5 +110,5 @@ public class RoleServiceServiceTest {
         var exception = assertThrows(AppException.class, () -> roleService.update(anyString(), roleUpdateRequest));
         Assertions.assertThat(exception.getErrorCode().getCode()).isEqualTo(1209);
     }
-    
+
 }

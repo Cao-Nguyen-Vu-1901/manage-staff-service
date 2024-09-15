@@ -53,7 +53,7 @@ public class SocialInsuranceServiceImp implements ISocialInsuranceService {
         SocialInsurance socialInsurance = socialInsuranceMapper.toSocialInsurance(request);
 
         var staff = staffRepository
-                .findById(request.getStaff())
+                .findById(request.getStaff()!= null ? request.getStaff() : "")
                 .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_EXISTED));
         socialInsurance.setStaff(staff);
 
