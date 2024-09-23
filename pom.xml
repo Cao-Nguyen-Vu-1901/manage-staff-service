@@ -51,7 +51,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-<<<<<<< HEAD
 		<dependency>
 			<groupId>com.google.firebase</groupId>
 			<artifactId>firebase-admin</artifactId>
@@ -65,7 +64,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>  
-=======
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
@@ -78,7 +77,6 @@
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-crypto</artifactId>
@@ -87,14 +85,11 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-<<<<<<< HEAD
 
-=======
 		<dependency>
 			<groupId>com.google.firebase</groupId>
 			<artifactId>firebase-admin</artifactId>
 			<version>8.1.0</version>
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
 		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
