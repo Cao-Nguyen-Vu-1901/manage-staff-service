@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RestController
-@RequestMapping("/admin/leave-days")
+@RequestMapping("/api/leave-days")
 public class LeaveDayController {
 
     ILeaveDayService leaveDayService;

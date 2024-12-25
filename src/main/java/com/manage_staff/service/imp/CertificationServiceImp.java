@@ -1,12 +1,7 @@
 package com.manage_staff.service.imp;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.manage_staff.dao.CertificationDAO;
-=======
-import com.manage_staff.dao.CertificationDAO;
-
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
 import com.manage_staff.dto.request.CertificationRequest;
 import com.manage_staff.dto.request.CertificationUpdateRequest;
 import com.manage_staff.dto.response.CertificationResponse;
@@ -84,10 +79,6 @@ public class CertificationServiceImp implements ICertificationService {
         Certification certification = certificationRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.CERTIFICATION_NOT_EXISTED));
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
 
         certificationMapper.updateCertification(certification,request);
         try {

@@ -33,8 +33,4 @@ public class RewardDisciplineRequest {
 
     @NotNull
     String creatorId;
-<<<<<<< HEAD
-
-=======
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
 }

@@ -1,19 +1,12 @@
 package com.manage_staff.dto.request;
 
 import com.manage_staff.entity.*;
-<<<<<<< HEAD
 
 import com.manage_staff.validator.DobConstraint;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import jakarta.validation.constraints.Pattern;
-
-=======
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,11 +29,7 @@ public class StaffRequest {
     @Size(min = 2, message = "Name must be at least 2 characters")
     String name;
 
-<<<<<<< HEAD
     @DobConstraint(min = 18)
-=======
-    @DobConstraint(min = 10)
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
     LocalDate dob;
 
     String gender;
@@ -53,8 +42,6 @@ public class StaffRequest {
             , message = "Phone number must be number and at least 10 characters")
     String phoneNumber;
 
-    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
-    String email;
 
     
     @NotNull

@@ -2,6 +2,7 @@ package com.manage_staff.dto.request;
 
 
 import com.manage_staff.validator.DayConstraint;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -23,7 +24,7 @@ public class BenefitRequest {
     String name;
 
     @NotNull
-    @Size(min = 1, message = "Money must be greater than or equal to 1")
+    @Min(value = 1, message = "Money must be greater than or equal to 1")
     BigDecimal money;
 
     @NotNull

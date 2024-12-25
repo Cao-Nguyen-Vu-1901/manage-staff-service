@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/admin/staff")
+@RequestMapping("/api/staff")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class StaffController {
@@ -39,10 +39,6 @@ public class StaffController {
                 ).build();
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
     @GetMapping
     public PagingResponse<List<StaffResponse>> paging(@RequestParam(defaultValue = "1") int currentPage,
                                                       @RequestParam(defaultValue = "9") int pageSize,

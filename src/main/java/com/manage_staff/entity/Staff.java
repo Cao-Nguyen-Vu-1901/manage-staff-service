@@ -22,11 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name = "staff")
 
-<<<<<<< HEAD
-public class Staff implements Serializable {
-=======
 public class Staff  implements Serializable {
->>>>>>> 4fb93866b5e43bde319c76341ed10b1a80862474
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;

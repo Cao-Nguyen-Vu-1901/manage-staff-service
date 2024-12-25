@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/certification")
+@RequestMapping("/api/certifications")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class CertificationController {
